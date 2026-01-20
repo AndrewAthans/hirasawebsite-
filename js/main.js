@@ -187,8 +187,22 @@ document.addEventListener('DOMContentLoaded', function() {
     if (talkingGuyVideo && blackGuysVideo && islamicClassVideo) {
         let currentVideo = 'islamic-class'; // Start with Islamic class video (school classroom)
         let blackGuysDuration = 0;
-        let blackGuysHalfDuration = 0;
+        let blackGuysHalfDuration = 5; // Default to 5 seconds if duration not loaded
         let transitionInProgress = false; // Prevent multiple transitions
+        
+        console.log('Video slideshow initialized');
+        
+        // Add error handlers for all videos
+        [islamicClassVideo, talkingGuyVideo, blackGuysVideo].forEach((video, index) => {
+            const names = ['islamic-class', 'talking-guy', 'black-guys'];
+            video.addEventListener('error', function(e) {
+                console.error(`Error loading ${names[index]} video:`, e);
+                console.error('Video error details:', video.error);
+            });
+            video.addEventListener('loadeddata', function() {
+                console.log(`${names[index]} video loaded, duration:`, video.duration);
+            });
+        });
         
         // Preload all videos
         talkingGuyVideo.load();
@@ -197,22 +211,30 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Get black guys video duration when metadata loads
         blackGuysVideo.addEventListener('loadedmetadata', function() {
-            blackGuysDuration = blackGuysVideo.duration;
-            blackGuysHalfDuration = blackGuysDuration / 2;
+            if (this.duration && this.duration !== Infinity) {
+                blackGuysDuration = this.duration;
+                blackGuysHalfDuration = Math.min(blackGuysDuration / 2, 10); // Cap at 10 seconds
+                console.log('Black guys video duration:', blackGuysDuration, 'Half duration:', blackGuysHalfDuration);
+            } else {
+                blackGuysHalfDuration = 5; // Fallback to 5 seconds
+                console.log('Black guys video duration not available, using 5 seconds');
+            }
         });
         
         // Start with Islamic class video (school classroom)
         islamicClassVideo.addEventListener('loadedmetadata', function() {
+            console.log('Islamic class video ready, starting playback');
             islamicClassVideo.play().catch(function(error) {
-                console.log('Video play failed:', error);
+                console.error('Islamic class video play failed:', error);
             });
         });
         
         // Ensure video plays when it becomes visible
         islamicClassVideo.addEventListener('canplay', function() {
             if (currentVideo === 'islamic-class' && this.paused) {
+                console.log('Islamic class video can play, resuming');
                 this.play().catch(function(error) {
-                    console.log('Video play failed:', error);
+                    console.error('Video play failed:', error);
                 });
             }
         });
@@ -220,6 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Islamic class video (school classroom): Play for 8 seconds, then fade to black guys
         islamicClassVideo.addEventListener('timeupdate', function() {
             if (this.currentTime >= 8 && currentVideo === 'islamic-class' && !transitionInProgress) {
+                console.log('Transitioning from Islamic class to Black guys');
                 transitionInProgress = true;
                 currentVideo = 'black-guys';
                 // Fade out Islamic class, fade in black guys
@@ -229,15 +252,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 blackGuysVideo.classList.add('opacity-100');
                 blackGuysVideo.currentTime = 0;
                 blackGuysVideo.play().catch(function(error) {
-                    console.log('Video play failed:', error);
+                    console.error('Black guys video play failed:', error);
                 });
                 setTimeout(() => { transitionInProgress = false; }, 1000);
             }
         });
         
-        // Black guys video: Play for half duration, then fade to talking guy (white guy on stage)
+        // Black guys video: Play for half duration (or 5 seconds), then fade to talking guy (white guy on stage)
         blackGuysVideo.addEventListener('timeupdate', function() {
             if (this.currentTime >= blackGuysHalfDuration && currentVideo === 'black-guys' && !transitionInProgress && blackGuysHalfDuration > 0) {
+                console.log('Transitioning from Black guys to Talking guy');
                 transitionInProgress = true;
                 currentVideo = 'talking-guy';
                 // Fade out black guys, fade in talking guy
@@ -247,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 talkingGuyVideo.classList.add('opacity-100');
                 talkingGuyVideo.currentTime = 0;
                 talkingGuyVideo.play().catch(function(error) {
-                    console.log('Video play failed:', error);
+                    console.error('Talking guy video play failed:', error);
                 });
                 setTimeout(() => { transitionInProgress = false; }, 1000);
             }
@@ -256,6 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Talking guy video (white guy on stage): Play for 5 seconds, then fade back to Islamic class
         talkingGuyVideo.addEventListener('timeupdate', function() {
             if (this.currentTime >= 5 && currentVideo === 'talking-guy' && !transitionInProgress) {
+                console.log('Transitioning from Talking guy to Islamic class');
                 transitionInProgress = true;
                 currentVideo = 'islamic-class';
                 // Fade out talking guy, fade in Islamic class
@@ -265,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 islamicClassVideo.classList.add('opacity-100');
                 islamicClassVideo.currentTime = 0;
                 islamicClassVideo.play().catch(function(error) {
-                    console.log('Video play failed:', error);
+                    console.error('Islamic class video play failed:', error);
                 });
                 setTimeout(() => { transitionInProgress = false; }, 1000);
             }
@@ -274,6 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Handle video end events as fallback
         islamicClassVideo.addEventListener('ended', function() {
             if (currentVideo === 'islamic-class' && !transitionInProgress) {
+                console.log('Islamic class video ended, transitioning to Black guys');
                 transitionInProgress = true;
                 currentVideo = 'black-guys';
                 islamicClassVideo.classList.remove('opacity-100');
@@ -282,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 blackGuysVideo.classList.add('opacity-100');
                 blackGuysVideo.currentTime = 0;
                 blackGuysVideo.play().catch(function(error) {
-                    console.log('Video play failed:', error);
+                    console.error('Black guys video play failed:', error);
                 });
                 setTimeout(() => { transitionInProgress = false; }, 1000);
             }
@@ -290,6 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         blackGuysVideo.addEventListener('ended', function() {
             if (currentVideo === 'black-guys' && !transitionInProgress) {
+                console.log('Black guys video ended, transitioning to Talking guy');
                 transitionInProgress = true;
                 currentVideo = 'talking-guy';
                 blackGuysVideo.classList.remove('opacity-100');
@@ -298,7 +325,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 talkingGuyVideo.classList.add('opacity-100');
                 talkingGuyVideo.currentTime = 0;
                 talkingGuyVideo.play().catch(function(error) {
-                    console.log('Video play failed:', error);
+                    console.error('Talking guy video play failed:', error);
                 });
                 setTimeout(() => { transitionInProgress = false; }, 1000);
             }
@@ -306,6 +333,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         talkingGuyVideo.addEventListener('ended', function() {
             if (currentVideo === 'talking-guy' && !transitionInProgress) {
+                console.log('Talking guy video ended, transitioning to Islamic class');
                 transitionInProgress = true;
                 currentVideo = 'islamic-class';
                 talkingGuyVideo.classList.remove('opacity-100');
@@ -314,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 islamicClassVideo.classList.add('opacity-100');
                 islamicClassVideo.currentTime = 0;
                 islamicClassVideo.play().catch(function(error) {
-                    console.log('Video play failed:', error);
+                    console.error('Islamic class video play failed:', error);
                 });
                 setTimeout(() => { transitionInProgress = false; }, 1000);
             }
