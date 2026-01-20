@@ -189,6 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let blackGuysDuration = 0;
         let blackGuysHalfDuration = 5; // Default to 5 seconds if duration not loaded
         let transitionInProgress = false; // Prevent multiple transitions
+        let talkingGuyVideoFailed = false; // Track if talking guy video failed to load
         
         console.log('Video slideshow initialized');
         
@@ -198,6 +199,11 @@ document.addEventListener('DOMContentLoaded', function() {
             video.addEventListener('error', function(e) {
                 console.error(`Error loading ${names[index]} video:`, e);
                 console.error('Video error details:', video.error);
+                // If talking guy video fails, mark it as failed and skip it in transitions
+                if (names[index] === 'talking-guy') {
+                    talkingGuyVideoFailed = true;
+                    console.warn('Talking guy video failed to load, will skip it in slideshow');
+                }
             });
             video.addEventListener('loadeddata', function() {
                 console.log(`${names[index]} video loaded, duration:`, video.duration);
@@ -287,13 +293,42 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Black guys video: Play for 5 seconds, then fade to talking guy (white guy on stage)
+        // Black guys video: Play for 5 seconds, then fade to talking guy (white guy on stage) OR skip to Islamic class if talking guy failed
         blackGuysVideo.addEventListener('timeupdate', function() {
             // Use fixed 5 seconds instead of half duration for reliability
             const transitionTime = 5;
             if (this.currentTime >= transitionTime && currentVideo === 'black-guys' && !transitionInProgress) {
-                console.log('Transitioning from Black guys to Talking guy at', this.currentTime, 'seconds');
                 transitionInProgress = true;
+                
+                // If talking guy video failed to load, skip it and go directly back to Islamic class
+                if (talkingGuyVideoFailed || talkingGuyVideo.error) {
+                    console.log('Skipping talking guy video (failed to load), transitioning directly to Islamic class');
+                    currentVideo = 'islamic-class';
+                    blackGuysVideo.pause();
+                    blackGuysVideo.classList.remove('opacity-100');
+                    blackGuysVideo.classList.add('opacity-0');
+                    islamicClassVideo.classList.remove('opacity-0');
+                    islamicClassVideo.classList.add('opacity-100');
+                    islamicClassVideo.currentTime = 0;
+                    if (islamicClassVideo.readyState >= 2) {
+                        islamicClassVideo.play().catch(function(error) {
+                            console.error('Islamic class video play failed:', error);
+                        });
+                    } else {
+                        islamicClassVideo.addEventListener('canplay', function playWhenReady() {
+                            islamicClassVideo.removeEventListener('canplay', playWhenReady);
+                            islamicClassVideo.play().catch(function(error) {
+                                console.error('Islamic class video play failed after canplay:', error);
+                            });
+                        }, { once: true });
+                        islamicClassVideo.load();
+                    }
+                    setTimeout(() => { transitionInProgress = false; }, 1000);
+                    return;
+                }
+                
+                // Normal transition to talking guy video
+                console.log('Transitioning from Black guys to Talking guy at', this.currentTime, 'seconds');
                 currentVideo = 'talking-guy';
                 // Pause and fade out black guys, fade in talking guy
                 blackGuysVideo.pause();
@@ -306,6 +341,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (talkingGuyVideo.readyState >= 2) { // HAVE_CURRENT_DATA or better
                     talkingGuyVideo.play().catch(function(error) {
                         console.error('Talking guy video play failed:', error);
+                        // If play fails, mark as failed and transition to Islamic class
+                        talkingGuyVideoFailed = true;
+                        setTimeout(() => {
+                            if (currentVideo === 'talking-guy' && !transitionInProgress) {
+                                currentVideo = 'islamic-class';
+                                talkingGuyVideo.pause();
+                                talkingGuyVideo.classList.remove('opacity-100');
+                                talkingGuyVideo.classList.add('opacity-0');
+                                islamicClassVideo.classList.remove('opacity-0');
+                                islamicClassVideo.classList.add('opacity-100');
+                                islamicClassVideo.currentTime = 0;
+                                islamicClassVideo.play().catch(function(err) {
+                                    console.error('Islamic class video play failed:', err);
+                                });
+                                transitionInProgress = false;
+                            }
+                        }, 500);
                     });
                 } else {
                     // Wait for video to be ready
@@ -313,6 +365,23 @@ document.addEventListener('DOMContentLoaded', function() {
                         talkingGuyVideo.removeEventListener('canplay', playWhenReady);
                         talkingGuyVideo.play().catch(function(error) {
                             console.error('Talking guy video play failed after canplay:', error);
+                            // If play fails, mark as failed and transition to Islamic class
+                            talkingGuyVideoFailed = true;
+                            setTimeout(() => {
+                                if (currentVideo === 'talking-guy' && !transitionInProgress) {
+                                    currentVideo = 'islamic-class';
+                                    talkingGuyVideo.pause();
+                                    talkingGuyVideo.classList.remove('opacity-100');
+                                    talkingGuyVideo.classList.add('opacity-0');
+                                    islamicClassVideo.classList.remove('opacity-0');
+                                    islamicClassVideo.classList.add('opacity-100');
+                                    islamicClassVideo.currentTime = 0;
+                                    islamicClassVideo.play().catch(function(err) {
+                                        console.error('Islamic class video play failed:', err);
+                                    });
+                                    transitionInProgress = false;
+                                }
+                            }, 500);
                         });
                     }, { once: true });
                     talkingGuyVideo.load();
@@ -401,8 +470,36 @@ document.addEventListener('DOMContentLoaded', function() {
         
         blackGuysVideo.addEventListener('ended', function() {
             if (currentVideo === 'black-guys' && !transitionInProgress) {
-                console.log('Black guys video ended, transitioning to Talking guy');
                 transitionInProgress = true;
+                
+                // If talking guy video failed to load, skip it and go directly back to Islamic class
+                if (talkingGuyVideoFailed || talkingGuyVideo.error) {
+                    console.log('Black guys video ended, skipping talking guy (failed to load), transitioning to Islamic class');
+                    currentVideo = 'islamic-class';
+                    blackGuysVideo.pause();
+                    blackGuysVideo.classList.remove('opacity-100');
+                    blackGuysVideo.classList.add('opacity-0');
+                    islamicClassVideo.classList.remove('opacity-0');
+                    islamicClassVideo.classList.add('opacity-100');
+                    islamicClassVideo.currentTime = 0;
+                    if (islamicClassVideo.readyState >= 2) {
+                        islamicClassVideo.play().catch(function(error) {
+                            console.error('Islamic class video play failed:', error);
+                        });
+                    } else {
+                        islamicClassVideo.addEventListener('canplay', function playWhenReady() {
+                            islamicClassVideo.removeEventListener('canplay', playWhenReady);
+                            islamicClassVideo.play().catch(function(error) {
+                                console.error('Islamic class video play failed after canplay:', error);
+                            });
+                        }, { once: true });
+                        islamicClassVideo.load();
+                    }
+                    setTimeout(() => { transitionInProgress = false; }, 1000);
+                    return;
+                }
+                
+                console.log('Black guys video ended, transitioning to Talking guy');
                 currentVideo = 'talking-guy';
                 blackGuysVideo.pause();
                 blackGuysVideo.classList.remove('opacity-100');
@@ -414,12 +511,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (talkingGuyVideo.readyState >= 2) {
                     talkingGuyVideo.play().catch(function(error) {
                         console.error('Talking guy video play failed:', error);
+                        // If play fails, mark as failed and transition to Islamic class
+                        talkingGuyVideoFailed = true;
+                        setTimeout(() => {
+                            if (currentVideo === 'talking-guy' && !transitionInProgress) {
+                                currentVideo = 'islamic-class';
+                                talkingGuyVideo.pause();
+                                talkingGuyVideo.classList.remove('opacity-100');
+                                talkingGuyVideo.classList.add('opacity-0');
+                                islamicClassVideo.classList.remove('opacity-0');
+                                islamicClassVideo.classList.add('opacity-100');
+                                islamicClassVideo.currentTime = 0;
+                                islamicClassVideo.play().catch(function(err) {
+                                    console.error('Islamic class video play failed:', err);
+                                });
+                                transitionInProgress = false;
+                            }
+                        }, 500);
                     });
                 } else {
                     talkingGuyVideo.addEventListener('canplay', function playWhenReady() {
                         talkingGuyVideo.removeEventListener('canplay', playWhenReady);
                         talkingGuyVideo.play().catch(function(error) {
                             console.error('Talking guy video play failed after canplay:', error);
+                            // If play fails, mark as failed and transition to Islamic class
+                            talkingGuyVideoFailed = true;
+                            setTimeout(() => {
+                                if (currentVideo === 'talking-guy' && !transitionInProgress) {
+                                    currentVideo = 'islamic-class';
+                                    talkingGuyVideo.pause();
+                                    talkingGuyVideo.classList.remove('opacity-100');
+                                    talkingGuyVideo.classList.add('opacity-0');
+                                    islamicClassVideo.classList.remove('opacity-0');
+                                    islamicClassVideo.classList.add('opacity-100');
+                                    islamicClassVideo.currentTime = 0;
+                                    islamicClassVideo.play().catch(function(err) {
+                                        console.error('Islamic class video play failed:', err);
+                                    });
+                                    transitionInProgress = false;
+                                }
+                            }, 500);
                         });
                     }, { once: true });
                     talkingGuyVideo.load();
