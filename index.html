@@ -12,13 +12,13 @@
         <nav class="container mx-auto px-4 py-4 relative">
             <div class="flex items-center justify-between">
                 <!-- Logo Section - Left Side -->
-                <div class="flex items-center space-x-3">
-                    <!-- Logo Icon - Transparent shield symbol, spans full text height -->
-                    <div class="flex-shrink-0 self-stretch flex items-center">
+                <div class="flex items-center space-x-2">
+                    <!-- Logo Icon - Transparent shield symbol, bigger and closer to text -->
+                    <div class="flex-shrink-0 flex items-center">
                         <img src="./assets/hirasa-logo-transparent.png" 
                              alt="Hirasa Foundation Logo" 
                              class="object-contain"
-                             style="height: 100%; max-height: 4rem; width: auto; filter: brightness(0) invert(1); opacity: 0.95;"
+                             style="height: 5rem; width: auto; filter: brightness(0) invert(1); opacity: 0.95;"
                              onerror="this.style.display='none';">
                     </div>
                     <!-- Organization Name and Tagline - Stacked vertically -->
@@ -29,25 +29,27 @@
                     </div>
                 </div>
 
-                <!-- Blank Space for Navigation Buttons (matching Leadership Institute spacing) -->
-                <div class="flex-1 flex items-center justify-center" style="min-width: 600px;">
-                    <!-- Empty space to match 3 navigation buttons width -->
-                </div>
+                <!-- Spacer -->
+                <div class="flex-1"></div>
 
-                <!-- Search and Menu Buttons - Right Side -->
-                <div class="flex items-center gap-3 mr-4">
+                <!-- Right Side: Search, Menu, and Donate -->
+                <div class="flex items-center gap-3">
                     <!-- Search Button -->
-                    <button id="search-btn" class="border border-white rounded-lg p-2 text-white">
+                    <button id="search-btn" class="border border-white rounded-lg p-2 text-white hover:bg-white hover:text-gray-800 transition">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </button>
                     <!-- Hamburger Menu Button -->
-                    <button id="mobile-menu-btn" class="border border-white rounded-lg p-2 text-white">
+                    <button id="mobile-menu-btn" class="border border-white rounded-lg p-2 text-white hover:bg-white hover:text-gray-800 transition">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
+                    <!-- Donate Button -->
+                    <a href="#support" class="border border-white rounded-lg px-6 py-2 text-white font-semibold hover:bg-white hover:text-gray-800 transition whitespace-nowrap">
+                        Donate
+                    </a>
                 </div>
             </div>
 
