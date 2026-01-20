@@ -1,0 +1,20 @@
+{
+  "name": "leadership-institute-website",
+  "version": "1.0.0",
+  "description": "Leadership Institute website shell with Tailwind CSS",
+  "scripts": {
+    "build:css": "tailwindcss -i ./input.css -o ./dist/output.css --watch",
+    "build:css:prod": "tailwindcss -i ./input.css -o ./dist/output.css --minify",
+    "dev": "browser-sync start --config bs-config.js",
+    "dev:full": "npm run build:css & npm run dev",
+    "tunnel": "npx localtunnel --port 3000 --subdomain hirasa-dev 2>&1 | grep -i 'your url is' || echo 'Tunnel starting...'"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "live-server": "^1.2.2",
+    "tailwindcss": "^3.4.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

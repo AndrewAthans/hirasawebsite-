@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hirasa Foundation</title>
+    <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="bg-white text-gray-900">
+    <!-- Header/Navigation -->
+    <header class="bg-gray-800 sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4 relative">
+            <div class="flex items-center justify-between">
+                <!-- Logo Section - Left Side -->
+                <div class="flex items-center space-x-3">
+                    <!-- Logo Icon - Transparent shield symbol, spans full text height -->
+                    <div class="flex-shrink-0 self-stretch flex items-center">
+                        <img src="./assets/hirasa-logo-transparent.png" 
+                             alt="Hirasa Foundation Logo" 
+                             class="object-contain"
+                             style="height: 100%; max-height: 4rem; width: auto; filter: brightness(0) invert(1); opacity: 0.95;"
+                             onerror="this.style.display='none';">
+                    </div>
+                    <!-- Organization Name and Tagline - Stacked vertically -->
+                    <div class="flex flex-col">
+                        <div class="text-white font-serif text-xl font-bold leading-tight">HIRASA</div>
+                        <div class="text-white font-serif text-lg font-semibold leading-tight">FOUNDATION</div>
+                        <div class="text-white text-xs font-serif font-light leading-tight opacity-90 mt-0.5">cultivating the next generation of muslims</div>
+                    </div>
+                </div>
+
+                <!-- Blank Space for Navigation Buttons (matching Leadership Institute spacing) -->
+                <div class="flex-1 flex items-center justify-center" style="min-width: 600px;">
+                    <!-- Empty space to match 3 navigation buttons width -->
+                </div>
+
+                <!-- Search and Menu Buttons - Right Side -->
+                <div class="flex items-center gap-3 mr-4">
+                    <!-- Search Button -->
+                    <button id="search-btn" class="border border-white rounded-lg p-2 text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
+                    <!-- Hamburger Menu Button -->
+                    <button id="mobile-menu-btn" class="border border-white rounded-lg p-2 text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dropdown Menu - All Screen Sizes -->
+            <div id="mobile-menu" class="hidden mt-4 pb-4 space-y-2 lg:absolute lg:right-4 lg:top-full lg:bg-gray-800 lg:border lg:border-white lg:rounded-lg lg:shadow-lg lg:min-w-[200px] lg:z-50">
+                <a href="#home" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Home</a>
+                <a href="#approach" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Our Approach</a>
+                <a href="#framework" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Leadership Framework</a>
+                <a href="#programs" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Programs</a>
+                <a href="#pilot" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Pilot Program</a>
+                <a href="#impact" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Impact</a>
+                <a href="#support" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Support</a>
+                <a href="#about" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">About</a>
+                <a href="#contact" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Search Overlay -->
+    <div id="search-overlay" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-start justify-center pt-32">
+        <div class="w-full max-w-4xl px-4">
+            <div class="relative">
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    placeholder="Search..." 
+                    class="w-full bg-transparent text-white text-2xl md:text-4xl font-serif border-b-2 border-white focus:outline-none focus:border-white placeholder:text-gray-400 placeholder:italic pb-2"
+                    autofocus
+                />
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative text-white min-h-[60vh] flex items-center justify-center overflow-hidden">
+        <!-- Video Slideshow Container -->
+        <div class="absolute inset-0 w-full h-full">
+            <!-- Islamic Class Video (plays first) -->
+            <video id="islamic-class-video" 
+                   class="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-1000 z-0"
+                   preload="auto"
+                   autoplay muted loop playsinline>
+                <source src="./assets/islamic-class-video.mp4" type="video/mp4">
+            </video>
+            <!-- Talking Guy Video -->
+            <video id="talking-guy-video" 
+                   class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 z-0"
+                   style="object-position: center 15%;"
+                   preload="auto"
+                   muted loop playsinline>
+                <source src="./assets/talking-guy-video.mov" type="video/quicktime">
+                <source src="./assets/talking-guy-video.mov" type="video/mp4">
+            </video>
+            <!-- Black Guys Video -->
+            <video id="black-guys-video" 
+                   class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 z-0"
+                   preload="auto"
+                   muted loop playsinline>
+                <source src="https://cdn.midjourney.com/video/5c0249b7-28a0-4b37-8d11-4bbcd225a64a/2.mp4" type="video/mp4">
+            </video>
+        </div>
+        <!-- Overlay for text readability -->
+        <div class="absolute inset-0 bg-black bg-opacity-30 z-[1]"></div>
+        <!-- Content -->
+        <div class="container mx-auto px-4 text-center relative z-10 py-16 md:py-20">
+            <h1 class="text-5xl md:text-6xl font-serif font-bold mb-6">
+                Hirasa Foundation
+            </h1>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+                <button class="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                    Explore Programs
+                </button>
+                <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition">
+                    Support Our Work
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Who We Are Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-3xl font-serif font-bold text-center mb-8">Who We Are</h2>
+            <p class="text-lg text-gray-700 mb-6 leading-relaxed">
+                Hirasa Foundation is a nonprofit leadership development organization dedicated to cultivating Muslim leaders grounded in the Qur'an and Sunnah. We focus on forming leaders whose character is anchored in responsibility, whose speech is guided by wisdom, and whose actions serve community life.
+            </p>
+            <p class="text-lg text-gray-700 leading-relaxed">
+                We believe leadership is not primarily a position. It is <em>amanah</em> — a trust — and enduring change begins from the bottom up: in homes, schools, campuses, and local communities.
+            </p>
+        </div>
+    </section>
+
+    <!-- What We Do Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-serif font-bold text-center mb-12">What We Do</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                <!-- Pillar 1 -->
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-xl font-serif font-bold mb-4">Leadership Formation</h3>
+                    <p class="text-gray-600">
+                        We develop character, discipline, and ethical judgment before titles or influence.
+                    </p>
+                </div>
+                
+                <!-- Pillar 2 -->
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-xl font-serif font-bold mb-4">Leadership Skill-Building</h3>
+                    <p class="text-gray-600">
+                        We train practical leadership skills that serve communities: communication, decision-making, reconciliation, and organization.
+                    </p>
+                </div>
+                
+                <!-- Pillar 3 -->
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-xl font-serif font-bold mb-4">Cultural Renewal</h3>
+                    <p class="text-gray-600">
+                        We aim to change culture through people — building a generation shaped by prophetic principles and long-term responsibility.
+                    </p>
+                </div>
+                
+                <!-- Pillar 4 -->
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-xl font-serif font-bold mb-4">Community Impact</h3>
+                    <p class="text-gray-600">
+                        We translate learning into service and local initiatives that strengthen institutions and trust.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership Framework Section -->
+    <section id="framework" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-serif font-bold text-center mb-4">Our Framework</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+                Hirasa programs are organized around five interconnected leadership tracks grounded in Qur'an and Sunnah:
+            </p>
+            
+            <div class="max-w-4xl mx-auto space-y-6">
+                <!-- Track 1 -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Track I — Tazkiyah & Amanah</h3>
+                    <p class="text-gray-700">
+                        Leadership begins inward. This track cultivates sincerity, humility, discipline, courage, and accountability — the moral foundation without which leadership becomes corruption.
+                    </p>
+                </div>
+                
+                <!-- Track 2 -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Track II — Khitabah & Shahadah</h3>
+                    <p class="text-gray-700">
+                        Leadership shapes culture through words. This track develops ethical speech, clarity, responsibility of voice, and wise communication that builds trust and guides hearts.
+                    </p>
+                </div>
+                
+                <!-- Track 3 -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Track III — Hikmah, Tadbir & Sulh</h3>
+                    <p class="text-gray-700">
+                        Leadership requires wisdom under pressure. This track trains principled decision-making, strategic thinking, consultation, reconciliation, and conflict navigation rooted in justice and patience.
+                    </p>
+                </div>
+                
+                <!-- Track 4 -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Track IV — Sirah, History & Collective Responsibility</h3>
+                    <p class="text-gray-700">
+                        Leadership is inherited through memory and example. This track draws from the Sirah, Qur'anic narratives of nations, and Islamic civilizational lessons to develop historical awareness and long-term thinking.
+                    </p>
+                </div>
+                
+                <!-- Track 5 -->
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Track V — Khidmah, Jama'ah & Cultural Renewal</h3>
+                    <p class="text-gray-700">
+                        Leadership exists to serve. This track emphasizes service, community responsibility, organizing for good, and bottom-up change through consistent contribution.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-8">
+                <p class="text-gray-600 italic mb-4">
+                    Tazkiyah grounds the soul → Speech shapes culture → Wisdom governs action → History informs direction → Service renews community.
+                </p>
+                <button class="bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark transition">
+                    View Leadership Framework
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Programs Section -->
+    <section id="programs" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-serif font-bold text-center mb-12">Featured Programs</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Program 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">[Program Image]</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-serif font-bold mb-2">Youth Leadership Circles</h3>
+                        <p class="text-gray-600 mb-4">
+                            Character formation, ethical discipline, communication, and service for middle & high school students.
+                        </p>
+                        <a href="#" class="text-primary hover:underline font-semibold">Learn More →</a>
+                    </div>
+                </div>
+
+                <!-- Program 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">[Program Image]</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-serif font-bold mb-2">Emerging Leaders Fellowship</h3>
+                        <p class="text-gray-600 mb-4">
+                            Prepare college students and early-career adults for institutional and community responsibility.
+                        </p>
+                        <a href="#" class="text-primary hover:underline font-semibold">Learn More →</a>
+                    </div>
+                </div>
+
+                <!-- Program 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">[Program Image]</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-serif font-bold mb-2">Community & Institutional Programs</h3>
+                        <p class="text-gray-600 mb-4">
+                            Build civic literacy, ethical engagement, and constructive community leadership.
+                        </p>
+                        <a href="#" class="text-primary hover:underline font-semibold">Learn More →</a>
+                    </div>
+                </div>
+
+                <!-- Program 4 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">[Program Image]</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-serif font-bold mb-2">Leadership-in-Action Service</h3>
+                        <p class="text-gray-600 mb-4">
+                            Translate leadership training into consistent service and local initiatives.
+                        </p>
+                        <a href="#" class="text-primary hover:underline font-semibold">Learn More →</a>
+                    </div>
+                </div>
+
+                <!-- Program 5 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">[Program Image]</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-serif font-bold mb-2">Leadership Foundations Pilot</h3>
+                        <p class="text-gray-600 mb-4">
+                            A 7-week hybrid program forming emerging Muslim leaders through experiential leadership formation.
+                        </p>
+                        <a href="#" class="text-primary hover:underline font-semibold">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-8">
+                <button class="bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark transition">
+                    View All Programs
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Donor Callout Section -->
+    <section class="py-16 bg-primary text-white">
+        <div class="container mx-auto px-4 text-center max-w-3xl">
+            <h2 class="text-3xl font-serif font-bold mb-6">Support Leadership Formation</h2>
+            <p class="text-xl mb-6">
+                Your support expands access to leadership formation rooted in faith, responsibility, and service. Donations directly support scholarships, mentorship, community programs, and youth cohorts.
+            </p>
+            <button class="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                Support Hirasa
+            </button>
+        </div>
+    </section>
+
+    <!-- Our Approach Section -->
+    <section id="approach" class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-3xl font-serif font-bold text-center mb-8">Our Approach</h2>
+            <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                Leadership in Islam is not defined by power or popularity. It is defined by <em>amanah</em>, justice, mercy, wisdom, and service.
+            </p>
+            <p class="text-lg text-gray-700 mb-12 leading-relaxed">
+                Hirasa Foundation forms leaders through an approach rooted in the Qur'an, the Sunnah, and the lived tradition of ethical cultivation — combining spiritual grounding with real-world responsibility.
+            </p>
+
+            <div class="space-y-12">
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-4">Our Philosophy of Change</h3>
+                    <p class="text-gray-700 mb-4">
+                        We believe culture changes from the bottom up. Before communities are transformed, individuals are transformed.
+                    </p>
+                    <p class="text-gray-700 mb-4">We invest in:</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                        <li>youth before adulthood</li>
+                        <li>habits before titles</li>
+                        <li>character before influence</li>
+                        <li>service before status</li>
+                    </ul>
+                    <p class="text-gray-700 mt-4">
+                        This is how leadership becomes rooted and sustainable.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-4">How We Teach</h3>
+                    <p class="text-gray-700 mb-4">
+                        Hirasa uses a formation-based model inspired by pre-modern principles:
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                        <li>experience before explanation</li>
+                        <li>companionship and mentorship</li>
+                        <li>reflection rooted in revelation</li>
+                        <li>responsibility through real tasks</li>
+                        <li>learning that becomes action</li>
+                    </ul>
+                    <p class="text-gray-700 mt-4">
+                        We prioritize growth that is inwardly grounded and outwardly useful.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-4">Who We Serve</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                        <li>Youth (middle & high school)</li>
+                        <li>College students and emerging adults</li>
+                        <li>Community volunteers and educators</li>
+                        <li>Masjid boards and leadership teams</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Detail Section -->
+    <section id="programs" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <h2 class="text-3xl font-serif font-bold text-center mb-4">Programs</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+                Hirasa Foundation delivers leadership development through a continuum of programs designed to support participants at every stage — from early formation to applied leadership and community impact.
+            </p>
+
+            <div class="space-y-8">
+                <!-- Program 1 -->
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-2xl font-serif font-bold mb-2">Program 1: Youth Leadership Circles</h3>
+                    <p class="text-gray-600 mb-2"><strong>Audience:</strong> Middle & high school students</p>
+                    <p class="text-gray-600 mb-2"><strong>Purpose:</strong> Character formation, ethical discipline, communication, and service.</p>
+                    <p class="text-gray-600"><strong>Format:</strong> Cohort-based circles with mentorship, community tasks, and guided reflection.</p>
+                </div>
+
+                <!-- Program 2 -->
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-2xl font-serif font-bold mb-2">Program 2: Emerging Leaders Fellowship</h3>
+                    <p class="text-gray-600 mb-2"><strong>Audience:</strong> College students & early-career adults</p>
+                    <p class="text-gray-600 mb-2"><strong>Purpose:</strong> Prepare leaders for institutional and community responsibility with applied leadership training.</p>
+                    <p class="text-gray-600"><strong>Format:</strong> Selective cohort, mentorship, applied projects, and skill intensives.</p>
+                </div>
+
+                <!-- Program 3 -->
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-2xl font-serif font-bold mb-2">Program 3: Community Civics & Leadership Workshops</h3>
+                    <p class="text-gray-600 mb-2"><strong>Audience:</strong> Community members, volunteers, educators</p>
+                    <p class="text-gray-600 mb-2"><strong>Purpose:</strong> Build civic literacy, ethical engagement, and constructive community leadership.</p>
+                    <p class="text-gray-600"><strong>Format:</strong> Workshops and partner-hosted trainings.</p>
+                </div>
+
+                <!-- Program 4 -->
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-2xl font-serif font-bold mb-2">Program 4: Masjid Leadership & Board Development</h3>
+                    <p class="text-gray-600 mb-2"><strong>Audience:</strong> Masjid boards and leadership teams</p>
+                    <p class="text-gray-600 mb-2"><strong>Purpose:</strong> Governance clarity, conflict management, strategic planning, and institutional health.</p>
+                    <p class="text-gray-600"><strong>Format:</strong> Training intensives + follow-up support.</p>
+                </div>
+
+                <!-- Program 5 -->
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-2xl font-serif font-bold mb-2">Program 5: Ethics, Oratory & Public Voice</h3>
+                    <p class="text-gray-600 mb-2"><strong>Audience:</strong> Youth, students, emerging leaders</p>
+                    <p class="text-gray-600 mb-2"><strong>Purpose:</strong> Develop ethical communicators capable of speaking with clarity, responsibility, and confidence.</p>
+                    <p class="text-gray-600"><strong>Format:</strong> Live practice sessions, feedback circles, and public speaking training.</p>
+                </div>
+
+                <!-- Program 6 -->
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-2xl font-serif font-bold mb-2">Program 6: Leadership-in-Action Service Program</h3>
+                    <p class="text-gray-600 mb-2"><strong>Audience:</strong> Participants across programs</p>
+                    <p class="text-gray-600 mb-2"><strong>Purpose:</strong> Translate leadership training into consistent service and local initiatives.</p>
+                    <p class="text-gray-600"><strong>Format:</strong> Service projects tied to leadership formation.</p>
+                </div>
+
+                <!-- Program 7 -->
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-2xl font-serif font-bold mb-2">Program 7: Scholarships & Access Fund</h3>
+                    <p class="text-gray-600 mb-2"><strong>Purpose:</strong> Expand access for underserved youth and emerging leaders.</p>
+                    <p class="text-gray-600">Scholarships support participation in cohorts, fellowships, and intensives.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pilot Program Section -->
+    <section id="pilot" class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-3xl font-serif font-bold text-center mb-4">Leadership Foundations Pilot</h2>
+            <p class="text-center text-gray-600 mb-2 italic">7 Weeks: History, Power, and Ethical Authority</p>
+            
+            <div class="mt-8 space-y-6">
+                <div>
+                    <h3 class="text-xl font-serif font-bold mb-4">Intro</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        The Leadership Foundations Pilot is a 7-week hybrid program designed to form emerging Muslim leaders through experiential leadership formation rooted in Qur'an and Sunnah, strengthened by leadership psychology and historical insight.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed mt-2">
+                        This pilot is built to cultivate responsibility, restraint, and community leadership — not merely confidence or visibility.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-serif font-bold mb-4">Who It's For</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                        <li>High school juniors and seniors</li>
+                        <li>College students</li>
+                        <li>Emerging young leaders</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-serif font-bold mb-4">Format</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                        <li><strong>Monday–Thursday:</strong> Guided experiences, community-based tasks, short modules that "unveil" meaning after action.</li>
+                        <li><strong>Friday:</strong> In-person youth circle (majlis) focused on reflection, mentorship, and integration.</li>
+                        <li><strong>Capstone:</strong> A culminating gathering or retreat element (optional in first pilot).</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-serif font-bold mb-4">Week-by-Week Themes</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li><strong>Week 1:</strong> What defines a leader? Authority, the self, and responsibility</li>
+                        <li><strong>Week 2:</strong> Power, ambition, and the fall of leaders</li>
+                        <li><strong>Week 3:</strong> Spiritual leadership and moral courage</li>
+                        <li><strong>Week 4:</strong> Islamic civilizational leadership models</li>
+                        <li><strong>Week 5:</strong> Leading on campus and in community life</li>
+                        <li><strong>Week 6:</strong> Action, sincerity, and accountability</li>
+                        <li><strong>Week 7:</strong> Capstone: power, civilization, and community renewal</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-serif font-bold mb-4">Outcomes</h3>
+                    <p class="text-gray-700 mb-2">Participants leave with:</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+                        <li>stronger ethical judgment</li>
+                        <li>deeper self-awareness</li>
+                        <li>responsible communication skills</li>
+                        <li>historical and civilizational clarity</li>
+                        <li>a practical leadership action plan rooted in service</li>
+                    </ul>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                    <button class="bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark transition">
+                        Apply
+                    </button>
+                    <button class="border-2 border-primary text-primary px-6 py-2 rounded hover:bg-primary hover:text-white transition">
+                        Partner With Us
+                    </button>
+                    <button class="border-2 border-primary text-primary px-6 py-2 rounded hover:bg-primary hover:text-white transition">
+                        Sponsor a Student
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section id="impact" class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-3xl font-serif font-bold text-center mb-8">Impact</h2>
+            <p class="text-lg text-gray-700 mb-12 leading-relaxed text-center">
+                Hirasa measures success not by visibility, but by formation and service: leaders who develop integrity, wisdom, and the ability to strengthen community life.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-6">What Participants Gain</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span>accountability and self-discipline</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span>ethical decision-making under pressure</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span>responsible public voice</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span>conflict navigation and reconciliation</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span>historical awareness and long-term thinking</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span>leadership through service</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-6">What Communities Gain</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span>stronger youth leadership pipelines</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span>healthier institutions and governance culture</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span>improved collaboration and conflict management</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span>constructive civic participation</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span>long-term cultural renewal</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-12">
+                <h3 class="text-2xl font-serif font-bold mb-6 text-center">Impact Metrics</h3>
+                <ul class="space-y-2 text-gray-700 max-w-2xl mx-auto">
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary mt-1">•</span>
+                        <span>cohort completion and retention</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary mt-1">•</span>
+                        <span>service hours and initiatives launched</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary mt-1">•</span>
+                        <span>mentor evaluations</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary mt-1">•</span>
+                        <span>participant self-assessment growth surveys</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary mt-1">•</span>
+                        <span>partner satisfaction (masjids/schools)</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Section -->
+    <section id="support" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-3xl font-serif font-bold text-center mb-8">Support</h2>
+            <p class="text-lg text-gray-700 mb-12 leading-relaxed text-center">
+                Your support expands access to leadership formation rooted in Qur'an and Sunnah. Donations directly support youth cohorts, mentorship, scholarships, and community programming.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-xl font-serif font-bold mb-4">Scholarship Sponsorship</h3>
+                    <p class="text-gray-600">Fund participation for students who otherwise lack access.</p>
+                </div>
+
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-xl font-serif font-bold mb-4">Program Sponsorship</h3>
+                    <p class="text-gray-600">Support a cohort, retreat, or community training initiative.</p>
+                </div>
+
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-xl font-serif font-bold mb-4">Institutional Partnership</h3>
+                    <p class="text-gray-600">Bring Hirasa training to a school, masjid, or campus program.</p>
+                </div>
+
+                <div class="bg-white rounded-lg p-6 shadow-md">
+                    <h3 class="text-xl font-serif font-bold mb-4">General Support</h3>
+                    <p class="text-gray-600">Sustain mentorship, materials, and program delivery.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                <button class="bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-dark transition">
+                    Donate
+                </button>
+                <button class="border-2 border-primary text-primary px-8 py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition">
+                    Partner With Us
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-3xl font-serif font-bold text-center mb-8">About Hirasa Foundation</h2>
+            <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                Hirasa Foundation was created to address a growing need for leadership formation rooted in faith, responsibility, and service. Our work is built to cultivate leaders who strengthen community life with wisdom and restraint and contribute to cultural renewal over time.
+            </p>
+
+            <div class="space-y-8">
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-4">Vision</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        A future where Muslim leadership is ethical, informed, and capable of guiding meaningful progress — rooted in Qur'an and Sunnah and expressed through service, justice, and wisdom.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-4">Mission</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        We develop principled Muslim leaders equipped with strategic intelligence, ethical foundations, and real-world skills — preparing them to drive collective progress and shape a renewed, confident future for the ummah.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-4">Values</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span><strong>Amanah</strong> (Responsibility)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span><strong>Integrity</strong></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span><strong>Wisdom</strong></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span><strong>Service</strong></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-primary mt-1">•</span>
+                            <span><strong>Community</strong></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-serif font-bold mb-4">Leadership / Team</h3>
+                    <p class="text-gray-600 italic">[Founder bio placeholder]</p>
+                    <p class="text-gray-600 italic mt-2">[Advisors/mentors placeholder]</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 max-w-2xl">
+            <h2 class="text-3xl font-serif font-bold text-center mb-8">Get in Touch</h2>
+            <p class="text-center text-gray-700 mb-8">
+                Interested in partnering, sponsoring students, or learning more about Hirasa Foundation?
+            </p>
+            <form class="bg-white rounded-lg shadow-md p-8 space-y-4">
+                <div>
+                    <label class="block text-gray-700 mb-2">Name</label>
+                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-2">Email</label>
+                    <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-2">Organization</label>
+                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-2">Message</label>
+                    <textarea rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-dark transition">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <!-- Programs -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Programs</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#programs" class="hover:text-white transition">Youth Leadership Circles</a></li>
+                        <li><a href="#programs" class="hover:text-white transition">Emerging Leaders Fellowship</a></li>
+                        <li><a href="#programs" class="hover:text-white transition">Community Programs</a></li>
+                        <li><a href="#pilot" class="hover:text-white transition">Leadership Foundations Pilot</a></li>
+                        <li><a href="#programs" class="hover:text-white transition">All Programs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Get Involved -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Get Involved</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#support" class="hover:text-white transition">Support</a></li>
+                        <li><a href="#support" class="hover:text-white transition">Partner With Us</a></li>
+                        <li><a href="#contact" class="hover:text-white transition">Contact</a></li>
+                        <li><a href="#about" class="hover:text-white transition">About</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#framework" class="hover:text-white transition">Leadership Framework</a></li>
+                        <li><a href="#approach" class="hover:text-white transition">Our Approach</a></li>
+                        <li><a href="#impact" class="hover:text-white transition">Impact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Social Media -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="hover:text-white transition">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-white transition">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-white transition">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="hover:text-white transition">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 mt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-sm mb-4 md:mb-0">© 2025 Hirasa Foundation. All Rights Reserved.</p>
+                    <div class="flex space-x-4 text-sm">
+                        <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                        <a href="#" class="hover:text-white transition">Email Policy</a>
+                        <a href="#" class="hover:text-white transition">Finance</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./js/main.js"></script>
+</body>
+</html>
+
