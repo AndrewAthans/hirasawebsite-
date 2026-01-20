@@ -6,6 +6,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchOverlay = document.getElementById('search-overlay');
     const searchInput = document.getElementById('search-input');
 
+    // Donate modal elements
+    const donateBtn = document.getElementById('donate-btn');
+    const donateModal = document.getElementById('donate-modal');
+    const donateClose = document.getElementById('donate-close');
+    const donateCancel = document.getElementById('donate-cancel');
+    const donateConfirm = document.getElementById('donate-confirm');
+    const donateError = document.getElementById('donate-error');
+    const donateCustomAmount = document.getElementById('donate-custom-amount');
+    const donateAmountButtons = document.querySelectorAll('.donate-amount-btn');
+
+    let selectedDonateAmount = 50; // default preset
+
     // Dropdown elements
     const studentBtn = document.getElementById('student-leaders-btn');
     const studentDropdown = document.getElementById('student-leaders-dropdown');
@@ -177,6 +189,137 @@ document.addEventListener('DOMContentLoaded', function() {
         searchInput.addEventListener('click', function(e) {
             e.stopPropagation();
         });
+    }
+
+    // Donate modal helpers
+    function openDonateModal() {
+        if (!donateModal) return;
+        donateModal.classList.remove('hidden');
+        donateModal.classList.add('flex');
+        if (donateCustomAmount) {
+            donateCustomAmount.value = '';
+        }
+        if (donateError) {
+            donateError.classList.add('hidden');
+            donateError.textContent = '';
+        }
+    }
+
+    function closeDonateModal() {
+        if (!donateModal) return;
+        donateModal.classList.add('hidden');
+        donateModal.classList.remove('flex');
+    }
+
+    // Wire donate button
+    if (donateBtn && donateModal) {
+        donateBtn.addEventListener('click', function () {
+            openDonateModal();
+        });
+    }
+
+    // Close actions
+    if (donateClose) {
+        donateClose.addEventListener('click', closeDonateModal);
+    }
+    if (donateCancel) {
+        donateCancel.addEventListener('click', closeDonateModal);
+    }
+    if (donateModal) {
+        donateModal.addEventListener('click', function (e) {
+            if (e.target === donateModal) {
+                closeDonateModal();
+            }
+        });
+    }
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && donateModal && !donateModal.classList.contains('hidden')) {
+            closeDonateModal();
+        }
+    });
+
+    // Preset amount selection
+    if (donateAmountButtons && donateAmountButtons.length > 0) {
+        donateAmountButtons.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const amount = parseInt(this.getAttribute('data-donate-amount') || '0', 10);
+                if (amount > 0) {
+                    selectedDonateAmount = amount;
+                    // Visual selection state
+                    donateAmountButtons.forEach(b => {
+                        b.classList.remove('border-gray-900', 'bg-gray-900', 'text-white');
+                        b.classList.add('border-gray-300', 'text-gray-800');
+                    });
+                    this.classList.remove('border-gray-300', 'text-gray-800');
+                    this.classList.add('border-gray-900', 'bg-gray-900', 'text-white');
+                    if (donateCustomAmount) {
+                        donateCustomAmount.value = '';
+                    }
+                    if (donateError) {
+                        donateError.classList.add('hidden');
+                        donateError.textContent = '';
+                    }
+                }
+            });
+        });
+    }
+
+    function getFinalDonateAmount() {
+        let amount = selectedDonateAmount;
+        if (donateCustomAmount && donateCustomAmount.value) {
+            const custom = parseFloat(donateCustomAmount.value);
+            if (!isNaN(custom) && custom > 0) {
+                amount = Math.round(custom);
+            }
+        }
+        return amount;
+    }
+
+    function validateDonateAmount(amount) {
+        if (!amount || amount <= 0) {
+            if (donateError) {
+                donateError.textContent = 'Please enter a valid donation amount.';
+                donateError.classList.remove('hidden');
+            }
+            return false;
+        }
+        if (amount > 10000) {
+            if (donateError) {
+                donateError.textContent = 'For donations over $10,000, please contact us directly.';
+                donateError.classList.remove('hidden');
+            }
+            return false;
+        }
+        if (donateError) {
+            donateError.classList.add('hidden');
+            donateError.textContent = '';
+        }
+        return true;
+    }
+
+    // Replace this with your real Stripe Payment Link or backend endpoint.
+    const STRIPE_PAYMENT_LINK = ''; // e.g. 'https://donate.stripe.com/your_payment_link'
+
+    async function handleDonateConfirm() {
+        const amount = getFinalDonateAmount();
+        if (!validateDonateAmount(amount)) return;
+
+        // If a Stripe Payment Link is configured, redirect with amount as query param
+        if (STRIPE_PAYMENT_LINK && typeof STRIPE_PAYMENT_LINK === 'string' && STRIPE_PAYMENT_LINK.length > 0) {
+            const url = `${STRIPE_PAYMENT_LINK}?amount=${encodeURIComponent(amount)}`;
+            window.location.href = url;
+            return;
+        }
+
+        // Fallback: show an informative message for now
+        alert(`Donate $${amount} – Configure STRIPE_PAYMENT_LINK in js/main.js to connect to your real Stripe donation page.`);
+        closeDonateModal();
+    }
+
+    if (donateConfirm) {
+        donateConfirm.addEventListener('click', handleDonateConfirm);
     }
 
     // Video Slideshow Logic - Three videos in order: Islamic class (school) → Black guys → Talking guy (white guy on stage)
