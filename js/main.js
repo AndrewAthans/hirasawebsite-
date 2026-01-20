@@ -230,6 +230,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Start with Islamic class video (school classroom)
         islamicClassVideo.addEventListener('loadedmetadata', function() {
             console.log('Islamic class video ready, starting playback');
+            console.log('Islamic class video duration:', this.duration);
+            console.log('Islamic class video readyState:', this.readyState);
             islamicClassVideo.play().catch(function(error) {
                 console.error('Islamic class video play failed:', error);
             });
@@ -237,6 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Ensure video plays when it becomes visible
         islamicClassVideo.addEventListener('canplay', function() {
+            console.log('Islamic class video can play');
             if (currentVideo === 'islamic-class' && this.paused) {
                 console.log('Islamic class video can play, resuming');
                 this.play().catch(function(error) {
@@ -244,6 +247,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
+        
+        // Add loadeddata event to ensure video is ready
+        islamicClassVideo.addEventListener('loadeddata', function() {
+            console.log('Islamic class video loadeddata event fired');
+            if (currentVideo === 'islamic-class' && this.paused) {
+                this.play().catch(function(error) {
+                    console.error('Video play failed on loadeddata:', error);
+                });
+            }
+        });
+        
+        // Force play attempt after a short delay if video hasn't started
+        setTimeout(() => {
+            if (islamicClassVideo.paused && currentVideo === 'islamic-class') {
+                console.log('Force attempting to play Islamic class video');
+                islamicClassVideo.play().catch(function(error) {
+                    console.error('Force play failed:', error);
+                });
+            }
+        }, 1000);
         
         // Islamic class video (school classroom): Play for 8 seconds, then fade to black guys
         islamicClassVideo.addEventListener('timeupdate', function() {
