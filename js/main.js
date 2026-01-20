@@ -255,6 +255,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 blackGuysVideo.play().catch(function(error) {
                     console.error('Black guys video play failed:', error);
                 });
+                // Fallback: if black guys video doesn't transition after 6 seconds, force transition
+                setTimeout(() => {
+                    if (currentVideo === 'black-guys' && !transitionInProgress) {
+                        console.log('Fallback: Forcing transition from Black guys to Talking guy');
+                        transitionInProgress = true;
+                        currentVideo = 'talking-guy';
+                        blackGuysVideo.pause();
+                        blackGuysVideo.classList.remove('opacity-100');
+                        blackGuysVideo.classList.add('opacity-0');
+                        talkingGuyVideo.classList.remove('opacity-0');
+                        talkingGuyVideo.classList.add('opacity-100');
+                        talkingGuyVideo.currentTime = 0;
+                        if (talkingGuyVideo.readyState >= 2) {
+                            talkingGuyVideo.play().catch(function(error) {
+                                console.error('Talking guy video play failed (fallback):', error);
+                            });
+                        } else {
+                            talkingGuyVideo.addEventListener('canplay', function playWhenReady() {
+                                talkingGuyVideo.removeEventListener('canplay', playWhenReady);
+                                talkingGuyVideo.play().catch(function(error) {
+                                    console.error('Talking guy video play failed after canplay (fallback):', error);
+                                });
+                            }, { once: true });
+                            talkingGuyVideo.load();
+                        }
+                        setTimeout(() => { transitionInProgress = false; }, 1000);
+                    }
+                }, 6000);
                 setTimeout(() => { transitionInProgress = false; }, 1000);
             }
         });
