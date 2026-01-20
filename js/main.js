@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function openResourcesCard() {
         if (!mobileMenu) return;
         mobileMenu.classList.remove('hidden');
-        mobileMenu.classList.add('flex');
+        mobileMenu.classList.add('block');
         const icon = mobileMenuBtn && mobileMenuBtn.querySelector('svg');
         if (icon) {
             icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeResourcesCard() {
         if (!mobileMenu) return;
         mobileMenu.classList.add('hidden');
-        mobileMenu.classList.remove('flex');
+        mobileMenu.classList.remove('block');
         const icon = mobileMenuBtn && mobileMenuBtn.querySelector('svg');
         if (icon) {
             icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
@@ -130,13 +130,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Backdrop click closes card (only when clicking on overlay, not inside card)
-        mobileMenu.addEventListener('click', function (e) {
-            if (e.target === mobileMenu) {
-                closeResourcesCard();
-            }
-        });
-
         // Close button in card header
         const resourcesCloseBtn = document.getElementById('resources-close-btn');
         if (resourcesCloseBtn) {
@@ -145,6 +138,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
+
+    // Close Resources card on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            closeResourcesCard();
+        }
+    });
 
     // Smooth scrolling for anchor links and close menu
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
