@@ -245,7 +245,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Transitioning from Islamic class to Black guys');
                 transitionInProgress = true;
                 currentVideo = 'black-guys';
-                // Fade out Islamic class, fade in black guys
+                // Pause and fade out Islamic class, fade in black guys
+                islamicClassVideo.pause();
                 islamicClassVideo.classList.remove('opacity-100');
                 islamicClassVideo.classList.add('opacity-0');
                 blackGuysVideo.classList.remove('opacity-0');
@@ -264,7 +265,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Transitioning from Black guys to Talking guy');
                 transitionInProgress = true;
                 currentVideo = 'talking-guy';
-                // Fade out black guys, fade in talking guy
+                // Pause and fade out black guys, fade in talking guy
+                blackGuysVideo.pause();
                 blackGuysVideo.classList.remove('opacity-100');
                 blackGuysVideo.classList.add('opacity-0');
                 talkingGuyVideo.classList.remove('opacity-0');
@@ -283,7 +285,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Transitioning from Talking guy to Islamic class');
                 transitionInProgress = true;
                 currentVideo = 'islamic-class';
-                // Fade out talking guy, fade in Islamic class
+                // Pause and fade out talking guy, fade in Islamic class
+                talkingGuyVideo.pause();
                 talkingGuyVideo.classList.remove('opacity-100');
                 talkingGuyVideo.classList.add('opacity-0');
                 islamicClassVideo.classList.remove('opacity-0');
@@ -302,6 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Islamic class video ended, transitioning to Black guys');
                 transitionInProgress = true;
                 currentVideo = 'black-guys';
+                islamicClassVideo.pause();
                 islamicClassVideo.classList.remove('opacity-100');
                 islamicClassVideo.classList.add('opacity-0');
                 blackGuysVideo.classList.remove('opacity-0');
@@ -319,6 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Black guys video ended, transitioning to Talking guy');
                 transitionInProgress = true;
                 currentVideo = 'talking-guy';
+                blackGuysVideo.pause();
                 blackGuysVideo.classList.remove('opacity-100');
                 blackGuysVideo.classList.add('opacity-0');
                 talkingGuyVideo.classList.remove('opacity-0');
@@ -336,6 +341,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Talking guy video ended, transitioning to Islamic class');
                 transitionInProgress = true;
                 currentVideo = 'islamic-class';
+                talkingGuyVideo.pause();
                 talkingGuyVideo.classList.remove('opacity-100');
                 talkingGuyVideo.classList.add('opacity-0');
                 islamicClassVideo.classList.remove('opacity-0');
