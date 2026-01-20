@@ -84,12 +84,13 @@
     </div>
 
     <!-- Hero Section - Full Screen Video -->
-    <section id="home" class="relative text-white h-screen flex items-center justify-center overflow-hidden">
+    <section id="home" class="relative text-white h-screen flex items-center justify-center overflow-hidden bg-gray-900">
         <!-- Video Slideshow Container -->
-        <div class="absolute inset-0 w-full h-full z-0">
+        <div class="absolute inset-0 w-full h-full" style="z-index: 0;">
             <!-- Islamic Class Video (plays first) -->
             <video id="islamic-class-video" 
                    class="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-1000"
+                   style="z-index: 0;"
                    preload="auto"
                    autoplay muted playsinline
                    webkit-playsinline>
@@ -99,6 +100,7 @@
             <!-- Black Guys Video (plays second) -->
             <video id="black-guys-video" 
                    class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+                   style="z-index: 0;"
                    preload="auto"
                    muted playsinline
                    webkit-playsinline>
@@ -108,7 +110,7 @@
             <!-- Talking Guy Video (plays third) -->
             <video id="talking-guy-video" 
                    class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
-                   style="object-position: center 15%;"
+                   style="z-index: 0; object-position: center 15%;"
                    preload="auto"
                    muted playsinline
                    webkit-playsinline>
@@ -119,7 +121,7 @@
             </video>
         </div>
         <!-- Overlay for text readability -->
-        <div class="absolute inset-0 bg-black bg-opacity-20 z-[1]"></div>
+        <div class="absolute inset-0 bg-black bg-opacity-20" style="z-index: 1;"></div>
         <!-- Content - Centered HIRASA FOUNDATION Text -->
         <div class="absolute inset-0 flex items-start justify-center pt-32 z-10">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white text-center drop-shadow-2xl">
