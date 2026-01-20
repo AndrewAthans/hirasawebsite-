@@ -199,36 +199,15 @@ document.addEventListener('DOMContentLoaded', function() {
             video.addEventListener('error', function(e) {
                 console.error(`Error loading ${names[index]} video:`, e);
                 console.error('Video error details:', video.error);
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:199',message:'Video error event',data:{videoName:names[index],errorCode:video.error?.code,errorMessage:video.error?.message,networkState:video.networkState,readyState:video.readyState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:index==1?'A':'E'})}).catch(()=>{});
-                // #endregion
                 // If talking guy video fails, mark it as failed and skip it in transitions
                 if (names[index] === 'talking-guy') {
                     talkingGuyVideoFailed = true;
                     console.warn('Talking guy video failed to load, will skip it in slideshow');
-                    // #region agent log
-                    fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:204',message:'Talking guy video marked as failed',data:{talkingGuyVideoFailed:true,errorCode:video.error?.code},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-                    // #endregion
                 }
             });
             video.addEventListener('loadeddata', function() {
                 console.log(`${names[index]} video loaded, duration:`, video.duration);
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:209',message:'Video loadeddata event',data:{videoName:names[index],duration:video.duration,readyState:video.readyState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:index==1?'B':'E'})}).catch(()=>{});
-                // #endregion
             });
-            if (names[index] === 'talking-guy') {
-                video.addEventListener('loadedmetadata', function() {
-                    // #region agent log
-                    fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:214',message:'Talking guy video loadedmetadata',data:{duration:video.duration,readyState:video.readyState,networkState:video.networkState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-                    // #endregion
-                });
-                video.addEventListener('canplay', function() {
-                    // #region agent log
-                    fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:220',message:'Talking guy video canplay event',data:{readyState:video.readyState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-                    // #endregion
-                });
-            }
         });
         
         // Preload all videos
@@ -341,20 +320,12 @@ document.addEventListener('DOMContentLoaded', function() {
         blackGuysVideo.addEventListener('timeupdate', function() {
             // Use fixed 5 seconds instead of half duration for reliability
             const transitionTime = 5;
-            // #region agent log
-            if (this.currentTime >= transitionTime - 0.5 && this.currentTime < transitionTime + 0.5 && currentVideo === 'black-guys') {
-                fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:323',message:'Black guys video near transition time',data:{currentTime:this.currentTime,transitionTime:transitionTime,currentVideo:currentVideo,transitionInProgress:transitionInProgress,talkingGuyVideoFailed:talkingGuyVideoFailed,talkingGuyError:talkingGuyVideo.error,talkingGuyReadyState:talkingGuyVideo.readyState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-            }
-            // #endregion
             if (this.currentTime >= transitionTime && currentVideo === 'black-guys' && !transitionInProgress) {
                 transitionInProgress = true;
                 
                 // If talking guy video failed to load, skip it and go directly back to Islamic class
                 if (talkingGuyVideoFailed || talkingGuyVideo.error) {
                     console.log('Skipping talking guy video (failed to load), transitioning directly to Islamic class');
-                    // #region agent log
-                    fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:328',message:'Skipping talking guy video due to failure',data:{talkingGuyVideoFailed:talkingGuyVideoFailed,talkingGuyError:talkingGuyVideo.error?.code},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-                    // #endregion
                     currentVideo = 'islamic-class';
                     blackGuysVideo.pause();
                     blackGuysVideo.classList.remove('opacity-100');
@@ -381,9 +352,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Normal transition to talking guy video
                 console.log('Transitioning from Black guys to Talking guy at', this.currentTime, 'seconds');
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:354',message:'Starting transition to talking guy video',data:{talkingGuyReadyState:talkingGuyVideo.readyState,talkingGuyNetworkState:talkingGuyVideo.networkState,talkingGuyError:talkingGuyVideo.error},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-                // #endregion
                 currentVideo = 'talking-guy';
                 // Pause and fade out black guys, fade in talking guy
                 blackGuysVideo.pause();
@@ -394,23 +362,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 talkingGuyVideo.currentTime = 0;
                 // Ensure talking guy video is ready before playing
                 if (talkingGuyVideo.readyState >= 2) { // HAVE_CURRENT_DATA or better
-                    // #region agent log
-                    fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:365',message:'Talking guy readyState >= 2, attempting play',data:{readyState:talkingGuyVideo.readyState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-                    // #endregion
-                    talkingGuyVideo.play().then(function() {
-                        // #region agent log
-                        fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:368',message:'Talking guy video play() succeeded',data:{paused:talkingGuyVideo.paused},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-                        // #endregion
-                    }).catch(function(error) {
+                    talkingGuyVideo.play().catch(function(error) {
                         console.error('Talking guy video play failed:', error);
-                        // #region agent log
-                        fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:372',message:'Talking guy video play() rejected',data:{errorName:error?.name,errorMessage:error?.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-                        // #endregion
                         // If play fails, mark as failed and transition to Islamic class
                         talkingGuyVideoFailed = true;
-                        // #region agent log
-                        fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:375',message:'Talking guy video marked as failed after play rejection',data:{talkingGuyVideoFailed:true},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-                        // #endregion
                         setTimeout(() => {
                             if (currentVideo === 'talking-guy' && !transitionInProgress) {
                                 currentVideo = 'islamic-class';
@@ -428,29 +383,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         }, 500);
                     });
                 } else {
-                    // #region agent log
-                    fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:384',message:'Talking guy readyState < 2, waiting for canplay',data:{readyState:talkingGuyVideo.readyState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-                    // #endregion
                     // Wait for video to be ready
                     talkingGuyVideo.addEventListener('canplay', function playWhenReady() {
                         talkingGuyVideo.removeEventListener('canplay', playWhenReady);
-                        // #region agent log
-                        fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:388',message:'Talking guy canplay event fired, attempting play',data:{readyState:talkingGuyVideo.readyState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-                        // #endregion
-                        talkingGuyVideo.play().then(function() {
-                            // #region agent log
-                            fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:391',message:'Talking guy video play() succeeded after canplay',data:{paused:talkingGuyVideo.paused},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-                            // #endregion
-                        }).catch(function(error) {
+                        talkingGuyVideo.play().catch(function(error) {
                             console.error('Talking guy video play failed after canplay:', error);
-                            // #region agent log
-                            fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:395',message:'Talking guy video play() rejected after canplay',data:{errorName:error?.name,errorMessage:error?.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-                            // #endregion
                             // If play fails, mark as failed and transition to Islamic class
                             talkingGuyVideoFailed = true;
-                            // #region agent log
-                            fetch('http://127.0.0.1:7242/ingest/8941d077-9b25-4251-ad0e-d8175bee18e5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'main.js:398',message:'Talking guy video marked as failed after canplay play rejection',data:{talkingGuyVideoFailed:true},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-                            // #endregion
                             setTimeout(() => {
                                 if (currentVideo === 'talking-guy' && !transitionInProgress) {
                                     currentVideo = 'islamic-class';
