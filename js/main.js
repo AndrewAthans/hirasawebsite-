@@ -96,38 +96,54 @@ document.addEventListener('DOMContentLoaded', function() {
             closeAllDropdowns();
         }
 
-        // Mobile menu close logic
-        if (mobileMenu && mobileMenuBtn) {
-            const isClickInsideMenu = mobileMenu.contains(event.target);
-            const isClickOnMobileButton = mobileMenuBtn.contains(event.target);
-            
-            if (!isClickInsideMenu && !isClickOnMobileButton && !mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.add('hidden');
-                const icon = mobileMenuBtn.querySelector('svg');
-                if (icon) {
-                    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
-                }
-            }
-        }
+        // (Resources card overlay has its own backdrop click handler; we don't close it here)
     });
 
-    // Mobile menu toggle
+    function openResourcesCard() {
+        if (!mobileMenu) return;
+        mobileMenu.classList.remove('hidden');
+        mobileMenu.classList.add('flex');
+        const icon = mobileMenuBtn && mobileMenuBtn.querySelector('svg');
+        if (icon) {
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
+        }
+    }
+
+    function closeResourcesCard() {
+        if (!mobileMenu) return;
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('flex');
+        const icon = mobileMenuBtn && mobileMenuBtn.querySelector('svg');
+        if (icon) {
+            icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
+        }
+    }
+
+    // Mobile menu toggle (Resources card)
     if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', function() {
-            mobileMenu.classList.toggle('hidden');
-            
-            // Toggle hamburger icon
-            const icon = mobileMenuBtn.querySelector('svg');
-            if (icon) {
-                if (mobileMenu.classList.contains('hidden')) {
-                    // Show hamburger
-                    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
-                } else {
-                    // Show X
-                    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
-                }
+        mobileMenuBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (mobileMenu.classList.contains('hidden')) {
+                openResourcesCard();
+            } else {
+                closeResourcesCard();
             }
         });
+
+        // Backdrop click closes card (only when clicking on overlay, not inside card)
+        mobileMenu.addEventListener('click', function (e) {
+            if (e.target === mobileMenu) {
+                closeResourcesCard();
+            }
+        });
+
+        // Close button in card header
+        const resourcesCloseBtn = document.getElementById('resources-close-btn');
+        if (resourcesCloseBtn) {
+            resourcesCloseBtn.addEventListener('click', function () {
+                closeResourcesCard();
+            });
+        }
     }
 
     // Smooth scrolling for anchor links and close menu
@@ -145,13 +161,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            // Close menu when link is clicked
+            // Close resources card when a nav link is clicked
             if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.add('hidden');
-                const icon = mobileMenuBtn.querySelector('svg');
-                if (icon) {
-                    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
-                }
+                closeResourcesCard();
             }
         });
     });

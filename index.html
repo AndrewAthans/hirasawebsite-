@@ -53,17 +53,61 @@
                 </div>
             </div>
 
-            <!-- Dropdown Menu - All Screen Sizes -->
-            <div id="mobile-menu" class="hidden mt-4 pb-4 space-y-2 lg:absolute lg:right-4 lg:top-full lg:bg-gray-800 lg:border lg:border-white lg:rounded-lg lg:shadow-lg lg:min-w-[200px] lg:z-50">
-                <a href="#home" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Home</a>
-                <a href="#approach" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Our Approach</a>
-                <a href="#framework" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Leadership Framework</a>
-                <a href="#programs" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Programs</a>
-                <a href="#pilot" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Pilot Program</a>
-                <a href="#impact" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Impact</a>
-                <a href="#support" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Support</a>
-                <a href="#about" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">About</a>
-                <a href="#contact" class="block py-2 px-3 text-white hover:bg-gray-700 rounded">Contact</a>
+            <!-- Resources Card Overlay (Hamburger Menu) -->
+            <div
+                id="mobile-menu"
+                class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 items-start justify-end pt-20 px-4"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="resources-card-title"
+            >
+                <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto p-6 relative">
+                    <!-- Close button -->
+                    <button
+                        type="button"
+                        class="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+                        aria-label="Close resources menu"
+                        id="resources-close-btn"
+                    >
+                        ✕
+                    </button>
+
+                    <!-- Title -->
+                    <h2 id="resources-card-title" class="text-2xl font-serif font-bold text-gray-900 mb-4">
+                        Resources
+                    </h2>
+
+                    <!-- Navigation Links -->
+                    <nav class="space-y-1">
+                        <a href="#home" class="flex items-center justify-between py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100">
+                            <span>Home</span>
+                        </a>
+                        <a href="#approach" class="flex items-center justify-between py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100">
+                            <span>Our Approach</span>
+                        </a>
+                        <a href="#framework" class="flex items-center justify-between py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100">
+                            <span>Leadership Framework</span>
+                        </a>
+                        <a href="#programs" class="flex items-center justify-between py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100">
+                            <span>Programs</span>
+                        </a>
+                        <a href="#pilot" class="flex items-center justify-between py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100">
+                            <span>Pilot Program</span>
+                        </a>
+                        <a href="#impact" class="flex items-center justify-between py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100">
+                            <span>Impact</span>
+                        </a>
+                        <a href="#support" class="flex items-center justify-between py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100">
+                            <span>Support</span>
+                        </a>
+                        <a href="#about" class="flex items-center justify-between py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100">
+                            <span>About</span>
+                        </a>
+                        <a href="#contact" class="flex items-center justify-between py-2 px-3 rounded-lg text-gray-800 hover:bg-gray-100">
+                            <span>Contact</span>
+                        </a>
+                    </nav>
+                </div>
             </div>
         </nav>
     </header>
