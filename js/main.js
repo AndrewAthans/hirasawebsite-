@@ -324,12 +324,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 transitionInProgress = true;
                 
                 // If talking guy video failed to load, skip it and go directly back to Islamic class
+                // But first ensure black guys video stays visible to avoid gray screen
                 if (talkingGuyVideoFailed || talkingGuyVideo.error) {
                     console.log('Skipping talking guy video (failed to load), transitioning directly to Islamic class');
+                    // Keep black guys video visible during transition to prevent gray screen
                     currentVideo = 'islamic-class';
                     blackGuysVideo.pause();
-                    blackGuysVideo.classList.remove('opacity-100');
+                    // Fade transition instead of immediate switch
                     blackGuysVideo.classList.add('opacity-0');
+                    setTimeout(() => {
+                        blackGuysVideo.classList.remove('opacity-100');
+                    }, 500);
                     islamicClassVideo.classList.remove('opacity-0');
                     islamicClassVideo.classList.add('opacity-100');
                     islamicClassVideo.currentTime = 0;
