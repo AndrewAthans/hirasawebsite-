@@ -179,13 +179,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Video Slideshow Logic - Three videos in order: Islamic class → Talking guy → Black guys
+    // Video Slideshow Logic - Three videos in order: Islamic class (school) → Black guys → Talking guy (white guy on stage)
     const talkingGuyVideo = document.getElementById('talking-guy-video');
     const blackGuysVideo = document.getElementById('black-guys-video');
     const islamicClassVideo = document.getElementById('islamic-class-video');
     
     if (talkingGuyVideo && blackGuysVideo && islamicClassVideo) {
-        let currentVideo = 'islamic-class'; // Start with Islamic class video
+        let currentVideo = 'islamic-class'; // Start with Islamic class video (school classroom)
         let blackGuysDuration = 0;
         let blackGuysHalfDuration = 0;
         let transitionInProgress = false; // Prevent multiple transitions
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function() {
             blackGuysHalfDuration = blackGuysDuration / 2;
         });
         
-        // Start with Islamic class video
+        // Start with Islamic class video (school classroom)
         islamicClassVideo.addEventListener('loadedmetadata', function() {
             islamicClassVideo.play().catch(function(error) {
                 console.log('Video play failed:', error);
@@ -217,32 +217,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Islamic class video: Play for 8 seconds, then fade to talking guy
+        // Islamic class video (school classroom): Play for 8 seconds, then fade to black guys
         islamicClassVideo.addEventListener('timeupdate', function() {
             if (this.currentTime >= 8 && currentVideo === 'islamic-class' && !transitionInProgress) {
                 transitionInProgress = true;
-                currentVideo = 'talking-guy';
-                // Fade out Islamic class, fade in talking guy
+                currentVideo = 'black-guys';
+                // Fade out Islamic class, fade in black guys
                 islamicClassVideo.classList.remove('opacity-100');
                 islamicClassVideo.classList.add('opacity-0');
-                talkingGuyVideo.classList.remove('opacity-0');
-                talkingGuyVideo.classList.add('opacity-100');
-                talkingGuyVideo.currentTime = 0;
-                talkingGuyVideo.play().catch(function(error) {
-                    console.log('Video play failed:', error);
-                });
-                setTimeout(() => { transitionInProgress = false; }, 1000);
-            }
-        });
-        
-        // Talking guy video: Play for 5 seconds, then fade to black guys
-        talkingGuyVideo.addEventListener('timeupdate', function() {
-            if (this.currentTime >= 5 && currentVideo === 'talking-guy' && !transitionInProgress) {
-                transitionInProgress = true;
-                currentVideo = 'black-guys';
-                // Fade out talking guy, fade in black guys
-                talkingGuyVideo.classList.remove('opacity-100');
-                talkingGuyVideo.classList.add('opacity-0');
                 blackGuysVideo.classList.remove('opacity-0');
                 blackGuysVideo.classList.add('opacity-100');
                 blackGuysVideo.currentTime = 0;
@@ -253,14 +235,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Black guys video: Play for half duration, then fade back to Islamic class
+        // Black guys video: Play for half duration, then fade to talking guy (white guy on stage)
         blackGuysVideo.addEventListener('timeupdate', function() {
             if (this.currentTime >= blackGuysHalfDuration && currentVideo === 'black-guys' && !transitionInProgress && blackGuysHalfDuration > 0) {
                 transitionInProgress = true;
-                currentVideo = 'islamic-class';
-                // Fade out black guys, fade in Islamic class
+                currentVideo = 'talking-guy';
+                // Fade out black guys, fade in talking guy
                 blackGuysVideo.classList.remove('opacity-100');
                 blackGuysVideo.classList.add('opacity-0');
+                talkingGuyVideo.classList.remove('opacity-0');
+                talkingGuyVideo.classList.add('opacity-100');
+                talkingGuyVideo.currentTime = 0;
+                talkingGuyVideo.play().catch(function(error) {
+                    console.log('Video play failed:', error);
+                });
+                setTimeout(() => { transitionInProgress = false; }, 1000);
+            }
+        });
+        
+        // Talking guy video (white guy on stage): Play for 5 seconds, then fade back to Islamic class
+        talkingGuyVideo.addEventListener('timeupdate', function() {
+            if (this.currentTime >= 5 && currentVideo === 'talking-guy' && !transitionInProgress) {
+                transitionInProgress = true;
+                currentVideo = 'islamic-class';
+                // Fade out talking guy, fade in Islamic class
+                talkingGuyVideo.classList.remove('opacity-100');
+                talkingGuyVideo.classList.add('opacity-0');
                 islamicClassVideo.classList.remove('opacity-0');
                 islamicClassVideo.classList.add('opacity-100');
                 islamicClassVideo.currentTime = 0;
@@ -275,25 +275,9 @@ document.addEventListener('DOMContentLoaded', function() {
         islamicClassVideo.addEventListener('ended', function() {
             if (currentVideo === 'islamic-class' && !transitionInProgress) {
                 transitionInProgress = true;
-                currentVideo = 'talking-guy';
+                currentVideo = 'black-guys';
                 islamicClassVideo.classList.remove('opacity-100');
                 islamicClassVideo.classList.add('opacity-0');
-                talkingGuyVideo.classList.remove('opacity-0');
-                talkingGuyVideo.classList.add('opacity-100');
-                talkingGuyVideo.currentTime = 0;
-                talkingGuyVideo.play().catch(function(error) {
-                    console.log('Video play failed:', error);
-                });
-                setTimeout(() => { transitionInProgress = false; }, 1000);
-            }
-        });
-        
-        talkingGuyVideo.addEventListener('ended', function() {
-            if (currentVideo === 'talking-guy' && !transitionInProgress) {
-                transitionInProgress = true;
-                currentVideo = 'black-guys';
-                talkingGuyVideo.classList.remove('opacity-100');
-                talkingGuyVideo.classList.add('opacity-0');
                 blackGuysVideo.classList.remove('opacity-0');
                 blackGuysVideo.classList.add('opacity-100');
                 blackGuysVideo.currentTime = 0;
@@ -307,9 +291,25 @@ document.addEventListener('DOMContentLoaded', function() {
         blackGuysVideo.addEventListener('ended', function() {
             if (currentVideo === 'black-guys' && !transitionInProgress) {
                 transitionInProgress = true;
-                currentVideo = 'islamic-class';
+                currentVideo = 'talking-guy';
                 blackGuysVideo.classList.remove('opacity-100');
                 blackGuysVideo.classList.add('opacity-0');
+                talkingGuyVideo.classList.remove('opacity-0');
+                talkingGuyVideo.classList.add('opacity-100');
+                talkingGuyVideo.currentTime = 0;
+                talkingGuyVideo.play().catch(function(error) {
+                    console.log('Video play failed:', error);
+                });
+                setTimeout(() => { transitionInProgress = false; }, 1000);
+            }
+        });
+        
+        talkingGuyVideo.addEventListener('ended', function() {
+            if (currentVideo === 'talking-guy' && !transitionInProgress) {
+                transitionInProgress = true;
+                currentVideo = 'islamic-class';
+                talkingGuyVideo.classList.remove('opacity-100');
+                talkingGuyVideo.classList.add('opacity-0');
                 islamicClassVideo.classList.remove('opacity-0');
                 islamicClassVideo.classList.add('opacity-100');
                 islamicClassVideo.currentTime = 0;

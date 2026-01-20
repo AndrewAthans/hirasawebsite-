@@ -81,8 +81,8 @@
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section id="home" class="relative text-white min-h-[60vh] flex items-center justify-center overflow-hidden">
+    <!-- Hero Section - Full Screen Video -->
+    <section id="home" class="relative text-white h-screen flex items-center justify-center overflow-hidden">
         <!-- Video Slideshow Container -->
         <div class="absolute inset-0 w-full h-full">
             <!-- Islamic Class Video (plays first) -->
@@ -92,7 +92,14 @@
                    autoplay muted loop playsinline>
                 <source src="./assets/islamic-class-video.mp4" type="video/mp4">
             </video>
-            <!-- Talking Guy Video -->
+            <!-- Black Guys Video (plays second) -->
+            <video id="black-guys-video" 
+                   class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 z-0"
+                   preload="auto"
+                   muted loop playsinline>
+                <source src="https://cdn.midjourney.com/video/5c0249b7-28a0-4b37-8d11-4bbcd225a64a/2.mp4" type="video/mp4">
+            </video>
+            <!-- Talking Guy Video (plays third) -->
             <video id="talking-guy-video" 
                    class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 z-0"
                    style="object-position: center 15%;"
@@ -101,29 +108,14 @@
                 <source src="./assets/talking-guy-video.mov" type="video/quicktime">
                 <source src="./assets/talking-guy-video.mov" type="video/mp4">
             </video>
-            <!-- Black Guys Video -->
-            <video id="black-guys-video" 
-                   class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 z-0"
-                   preload="auto"
-                   muted loop playsinline>
-                <source src="https://cdn.midjourney.com/video/5c0249b7-28a0-4b37-8d11-4bbcd225a64a/2.mp4" type="video/mp4">
-            </video>
         </div>
         <!-- Overlay for text readability -->
-        <div class="absolute inset-0 bg-black bg-opacity-30 z-[1]"></div>
-        <!-- Content -->
-        <div class="container mx-auto px-4 text-center relative z-10 py-16 md:py-20">
-            <h1 class="text-5xl md:text-6xl font-serif font-bold mb-6">
-                Hirasa Foundation
+        <div class="absolute inset-0 bg-black bg-opacity-40 z-[1]"></div>
+        <!-- Content - Centered HIRASA FOUNDATION Text -->
+        <div class="absolute inset-0 flex items-center justify-center z-10">
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-serif font-bold text-white text-center drop-shadow-2xl">
+                HIRASA<br>FOUNDATION
             </h1>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-                <button class="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
-                    Explore Programs
-                </button>
-                <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition">
-                    Support Our Work
-                </button>
-            </div>
         </div>
     </section>
 
