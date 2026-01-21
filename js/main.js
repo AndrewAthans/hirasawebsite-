@@ -101,12 +101,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function openResourcesCard() {
         if (!mobileMenu || !mobileMenuBtn) return;
-        // Position card directly under hamburger button
-        const hamburgerRect = mobileMenuBtn.getBoundingClientRect();
-        mobileMenu.style.top = (hamburgerRect.bottom + 8) + 'px'; // 8px gap below button
-        mobileMenu.style.right = (window.innerWidth - hamburgerRect.right) + 'px'; // Align right edge with button
+        // Center overlay, remove any inline positioning
+        mobileMenu.style.top = '';
+        mobileMenu.style.right = '';
         mobileMenu.classList.remove('hidden');
-        mobileMenu.classList.add('block');
+        mobileMenu.classList.add('flex');
         const icon = mobileMenuBtn.querySelector('svg');
         if (icon) {
             icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>';
@@ -116,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeResourcesCard() {
         if (!mobileMenu) return;
         mobileMenu.classList.add('hidden');
-        mobileMenu.classList.remove('block');
+        mobileMenu.classList.remove('flex');
         const icon = mobileMenuBtn && mobileMenuBtn.querySelector('svg');
         if (icon) {
             icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>';
@@ -141,6 +140,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 closeResourcesCard();
             });
         }
+
+        // Backdrop click closes card (clicking outside the white card)
+        mobileMenu.addEventListener('click', function (e) {
+            if (e.target === mobileMenu) {
+                closeResourcesCard();
+            }
+        });
     }
 
     // Close Resources card on Escape key
