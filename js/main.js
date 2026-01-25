@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Video Slideshow - play each video once then switch
+    // Video Slideshow - switch every 5 seconds
     const videos = [
         document.getElementById('video-1'),
         document.getElementById('video-2'),
@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Preload all videos
         videos.forEach(video => video.load());
         
-        function switchToNextVideo() {
+        setInterval(() => {
             const currentVideo = videos[currentIndex];
             const nextIndex = (currentIndex + 1) % videos.length;
             const nextVideo = videos[nextIndex];
@@ -303,12 +303,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 500);
             
             currentIndex = nextIndex;
-        }
-        
-        // Switch when each video ends
-        videos.forEach(video => {
-            video.addEventListener('ended', switchToNextVideo);
-        });
+        }, 5000); // Switch every 5 seconds
     }
 });
 
