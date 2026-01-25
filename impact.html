@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impact - Hirasa Foundation</title>
+    <link rel="stylesheet" href="/dist/output.css">
+</head>
+<body class="bg-white text-gray-900">
+    <header class="bg-gray-800 sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4 relative">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center space-x-3" id="logo-section">
+                    <div class="flex-shrink-0">
+                        <img src="/assets/hirasa-logo-transparent.png" alt="Hirasa Foundation Logo" class="h-16 w-16 object-contain" style="filter: brightness(0) invert(1); opacity: 0.95;" onerror="this.style.display='none';">
+                    </div>
+                    <div class="flex flex-col">
+                        <div class="text-white font-serif text-xl font-bold leading-tight">HIRASA</div>
+                        <div class="text-white font-serif text-lg font-semibold leading-tight">FOUNDATION</div>
+                        <div class="text-white text-xs font-serif font-light leading-tight opacity-90 mt-0.5">cultivating the next generation of muslims</div>
+                    </div>
+                </a>
+                <div class="flex-1 flex items-center justify-center" style="min-width: 600px;"></div>
+                <div class="flex items-center gap-3 mr-4" id="buttons-section">
+                    <button id="donate-btn" class="border border-white rounded-lg px-4 py-2 text-white font-semibold hover:bg-white hover:text-gray-800 transition">Donate</button>
+                    <button id="search-btn" class="border border-white rounded-lg p-2 text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+                    <button id="mobile-menu-btn" class="border border-white rounded-lg p-2 text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div id="mobile-menu-overlay" class="hidden fixed inset-0 z-40"></div>
+    <div id="mobile-menu" class="hidden fixed top-20 right-4 sm:right-6 md:right-8 z-50 bg-white rounded-lg shadow-xl border border-gray-200 min-w-[280px] max-w-[320px]">
+        <div class="p-6">
+            <h2 class="text-2xl font-serif font-bold mb-4 text-gray-900">Resources</h2>
+            <hr class="border-gray-300 mb-4">
+            <nav class="space-y-2">
+                <a href="index.html" class="block py-2 px-3 text-gray-700 hover:bg-gray-100 rounded transition">Home</a>
+                <a href="programs.html" class="block py-2 px-3 text-gray-700 hover:bg-gray-100 rounded transition">Programs</a>
+                <a href="pilot.html" class="block py-2 px-3 text-gray-700 hover:bg-gray-100 rounded transition">Pilot Program</a>
+                <a href="impact.html" class="block py-2 px-3 text-gray-700 bg-gray-100 rounded transition">Impact</a>
+                <a href="support.html" class="block py-2 px-3 text-gray-700 hover:bg-gray-100 rounded transition">Support</a>
+                <a href="about.html" class="block py-2 px-3 text-gray-700 hover:bg-gray-100 rounded transition">About</a>
+                <a href="index.html#contact" class="block py-2 px-3 text-gray-700 hover:bg-gray-100 rounded transition">Contact</a>
+            </nav>
+        </div>
+    </div>
+
+    <div id="donate-modal-overlay" class="hidden fixed inset-0 z-40"></div>
+    <div id="donate-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+        <div class="bg-white rounded-lg shadow-xl border border-gray-200 max-w-md w-full mx-4 pointer-events-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-3xl font-serif font-bold text-gray-900">Support Hirasa Foundation</h2>
+                    <button id="donate-close-btn" class="text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+                </div>
+                <p class="text-gray-600 mb-6">Choose an amount to donate.</p>
+                <div class="space-y-3 mb-6">
+                    <button class="donate-amount-btn w-full py-3 px-4 border-2 border-gray-300 rounded-lg hover:border-primary hover:bg-primary hover:text-white transition text-left" data-amount="25">$25</button>
+                    <button class="donate-amount-btn w-full py-3 px-4 border-2 border-gray-300 rounded-lg hover:border-primary hover:bg-primary hover:text-white transition text-left" data-amount="50">$50</button>
+                    <button class="donate-amount-btn w-full py-3 px-4 border-2 border-gray-300 rounded-lg hover:border-primary hover:bg-primary hover:text-white transition text-left" data-amount="100">$100</button>
+                    <button class="donate-amount-btn w-full py-3 px-4 border-2 border-gray-300 rounded-lg hover:border-primary hover:bg-primary hover:text-white transition text-left" data-amount="250">$250</button>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">Or enter a custom amount</label>
+                    <input type="number" id="custom-amount" placeholder="Enter amount" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                <div class="flex gap-3 mb-4">
+                    <button id="donate-submit-btn" class="flex-1 bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition">Donate securely</button>
+                    <button id="donate-cancel-btn" class="px-6 py-3 text-gray-600 hover:text-gray-800 transition">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="search-overlay" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-start justify-center pt-32">
+        <div class="w-full max-w-4xl px-4">
+            <input type="text" id="search-input" placeholder="Search..." class="w-full bg-transparent text-white text-2xl md:text-4xl font-serif border-b-2 border-white focus:outline-none pb-2" autofocus />
+        </div>
+    </div>
+
+    <section class="py-16 bg-primary text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-serif font-bold mb-4">Our Impact</h1>
+            <p class="text-xl max-w-3xl mx-auto">Hirasa measures success not by visibility, but by formation and service.</p>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <p class="text-lg text-gray-700 mb-12 leading-relaxed text-center">
+                Leaders who develop integrity, wisdom, and the ability to strengthen community life.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-12 mb-16">
+                <div>
+                    <h2 class="text-2xl font-serif font-bold mb-6">What Participants Gain</h2>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start gap-3">
+                            <span class="text-primary mt-1 text-xl">•</span>
+                            <span>accountability and self-discipline</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-primary mt-1 text-xl">•</span>
+                            <span>ethical decision-making under pressure</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-primary mt-1 text-xl">•</span>
+                            <span>responsible public voice</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-primary mt-1 text-xl">•</span>
+                            <span>conflict navigation and reconciliation</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-primary mt-1 text-xl">•</span>
+                            <span>historical awareness and long-term thinking</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-primary mt-1 text-xl">•</span>
+                            <span>leadership through service</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-serif font-bold mb-6">What Communities Gain</h2>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start gap-3">
+                            <span class="text-primary mt-1 text-xl">•</span>
+                            <span>stronger youth leadership pipelines</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-primary mt-1 text-xl">•</span>
+                            <span>healthier institutions and governance culture</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-primary mt-1 text-xl">•</span>
+                            <span>improved collaboration and conflict management</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-primary mt-1 text-xl">•</span>
+                            <span>constructive civic participation</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-primary mt-1 text-xl">•</span>
+                            <span>long-term cultural renewal</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-lg p-8">
+                <h2 class="text-2xl font-serif font-bold mb-6 text-center">Impact Metrics</h2>
+                <ul class="space-y-3 text-gray-700 max-w-2xl mx-auto">
+                    <li class="flex items-start gap-3">
+                        <span class="text-primary mt-1 text-xl">•</span>
+                        <span>cohort completion and retention</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-primary mt-1 text-xl">•</span>
+                        <span>service hours and initiatives launched</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-primary mt-1 text-xl">•</span>
+                        <span>mentor evaluations</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-primary mt-1 text-xl">•</span>
+                        <span>participant self-assessment growth surveys</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-primary mt-1 text-xl">•</span>
+                        <span>partner satisfaction (masjids/schools)</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="support.html" class="bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-dark transition inline-block">Support Our Mission</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Programs</h4>
+                    <ul class="space-y-2">
+                        <li><a href="programs.html#youth-leadership" class="hover:text-white transition">Youth Leadership Circles</a></li>
+                        <li><a href="programs.html#emerging-leaders" class="hover:text-white transition">Emerging Leaders Fellowship</a></li>
+                        <li><a href="programs.html#community-programs" class="hover:text-white transition">Community Programs</a></li>
+                        <li><a href="pilot.html" class="hover:text-white transition">Leadership Foundations Pilot</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Get Involved</h4>
+                    <ul class="space-y-2">
+                        <li><a href="support.html" class="hover:text-white transition">Support</a></li>
+                        <li><a href="support.html" class="hover:text-white transition">Partner With Us</a></li>
+                        <li><a href="index.html#contact" class="hover:text-white transition">Contact</a></li>
+                        <li><a href="about.html" class="hover:text-white transition">About</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html#framework" class="hover:text-white transition">Leadership Framework</a></li>
+                        <li><a href="about.html" class="hover:text-white transition">Our Approach</a></li>
+                        <li><a href="impact.html" class="hover:text-white transition">Impact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                        <a href="#" class="hover:text-white transition"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z"/></svg></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 mt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-sm mb-4 md:mb-0">© 2025 Hirasa Foundation. All Rights Reserved.</p>
+                    <div class="flex space-x-4 text-sm">
+                        <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                        <a href="#" class="hover:text-white transition">Email Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/main.js"></script>
+</body>
+</html>
+

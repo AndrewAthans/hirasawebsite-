@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header Editor - Hirasa Foundation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .editor-container { display: flex; width: 100%; height: 100%; }
+        .preview-area {
+            flex: 1;
+            background: #e5e7eb;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .preview-header {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .preview-header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+        }
+        .view-toggle {
+            display: flex;
+            gap: 8px;
+            background: #f3f4f6;
+            padding: 4px;
+            border-radius: 8px;
+        }
+        .view-toggle button {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .view-toggle button.active {
+            background: white;
+            color: #111827;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .preview-content {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+        .header-preview {
+            display: block;
+        }
+        .header-preview.hidden {
+            display: none;
+        }
+        .website-iframe-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            overflow: auto;
+            background: white;
+        }
+        .website-iframe-container.show {
+            display: block;
+        }
+        .website-iframe {
+            width: 166.67%;
+            height: 166.67%;
+            border: none;
+            transform: scale(0.6);
+            transform-origin: top left;
+        }
+        .header-preview {
+            background: #1f2937;
+            padding: 16px;
+            position: relative;
+            min-height: 120px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .controls-panel {
+            width: 380px;
+            background: white;
+            border-left: 1px solid #e5e7eb;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        .controls-panel h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+        .controls-panel p {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .draggable {
+            cursor: move;
+            position: absolute;
+            user-select: none;
+            transition: opacity 0.2s;
+        }
+        .draggable:hover {
+            outline: 2px dashed #3b82f6;
+            outline-offset: 2px;
+        }
+        .draggable.dragging {
+            opacity: 0.8;
+            z-index: 1000;
+        }
+        .control-group {
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #111827;
+            font-size: 14px;
+        }
+        .control-group .input-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .control-group .input-field {
+            flex: 1;
+        }
+        .control-group .input-field label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        .control-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .control-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .position-info {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+        }
+        .save-btn {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: auto;
+            font-size: 16px;
+        }
+        .save-btn:hover { background: #2563eb; }
+        .save-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        .status-message {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
+        }
+        .status-message.show { display: block; }
+        .status-message.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .status-message.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .github-token-section {
+            margin-bottom: 24px;
+            padding: 16px;
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+        }
+        .github-token-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+        .github-token-section input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #fbbf24;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .github-token-section button {
+            background: #f59e0b;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .github-token-section button:hover {
+            background: #d97706;
+        }
+    </style>
+</head>
+<body>
+    <div class="editor-container">
+        <div class="preview-area">
+            <div class="preview-header">
+                <h1>Header Editor</h1>
+                <div class="view-toggle">
+                    <button id="header-view-btn" class="active" onclick="switchView('header')">Header Preview</button>
+                    <button id="website-view-btn" onclick="switchView('website')">Full Website</button>
+                </div>
+            </div>
+            <div class="preview-content">
+                <div class="header-preview" id="header-preview">
+                <div class="draggable" id="logo-section" style="left: 16px; top: 16px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="flex-shrink: 0;">
+                            <div style="height: 64px; width: 64px; background: white; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🛡️</div>
+                        </div>
+                        <div style="display: flex; flex-direction: column;">
+                            <div style="color: white; font-family: serif; font-size: 20px; font-weight: bold; line-height: 1.2;">HIRASA</div>
+                            <div style="color: white; font-family: serif; font-size: 18px; font-weight: 600; line-height: 1.2;">FOUNDATION</div>
+                            <div style="color: white; font-family: serif; font-size: 12px; font-weight: 300; line-height: 1.2; opacity: 0.9; margin-top: 2px;">cultivating the next generation of muslims</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="draggable" id="buttons-section" style="right: 16px; top: 16px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <button style="border: 1px solid white; border-radius: 8px; padding: 8px 16px; color: white; font-weight: 600; background: transparent; cursor: pointer; pointer-events: none;">Donate</button>
+                        <button style="border: 1px solid white; border-radius: 8px; padding: 8px; color: white; background: transparent; cursor: pointer; pointer-events: none;">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </button>
+                        <button style="border: 1px solid white; border-radius: 8px; padding: 8px; color: white; background: transparent; cursor: pointer; pointer-events: none;">
+                            <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                </div>
+                <div class="website-iframe-container">
+                    <iframe id="website-iframe" class="website-iframe" src="./index.html"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="controls-panel">
+            <h2>Header Editor</h2>
+            <p>Drag elements in the preview to reposition them. Use the controls below for precise adjustments.</p>
+            <div class="github-token-section">
+                <h3>GitHub Token (Required for saving)</h3>
+                <input type="password" id="github-token" placeholder="Enter GitHub Personal Access Token">
+                <button id="save-token-btn">Save Token</button>
+                <div id="token-status" style="font-size: 12px; color: #92400e; margin-top: 4px;"></div>
+            </div>
+            <div class="control-group">
+                <label>Logo Section</label>
+                <div class="input-row">
+                    <div class="input-field">
+                        <label>Left (px)</label>
+                        <input type="number" id="logo-left" value="16" onchange="updatePosition('logo-section', 'left', this.value)">
+                    </div>
+                    <div class="input-field">
+                        <label>Top (px)</label>
+                        <input type="number" id="logo-top" value="16" onchange="updatePosition('logo-section', 'top', this.value)">
+                    </div>
+                </div>
+                <div class="position-info" id="logo-pos">Position: left: 16px, top: 16px</div>
+            </div>
+            <div class="control-group">
+                <label>Buttons Section</label>
+                <div class="input-row">
+                    <div class="input-field">
+                        <label>Right (px)</label>
+                        <input type="number" id="buttons-right" value="16" onchange="updatePosition('buttons-section', 'right', this.value)">
+                    </div>
+                    <div class="input-field">
+                        <label>Top (px)</label>
+                        <input type="number" id="buttons-top" value="16" onchange="updatePosition('buttons-section', 'top', this.value)">
+                    </div>
+                </div>
+                <div class="position-info" id="buttons-pos">Position: right: 16px, top: 16px</div>
+            </div>
+            <button class="save-btn" id="save-push-btn" onclick="saveAndPush()">Save & Push to GitHub</button>
+            <div class="status-message" id="status-message"></div>
+        </div>
+    </div>
+    <script>
+        // (Editor JS inline kept as-is from local version)
+        let draggedElement = null;
+        let offset = { x: 0, y: 0 };
+        let githubToken = null;
+        let currentView = 'header';
+        let iframeElements = { logo: null, buttons: null };
+        
+        const savedToken = localStorage.getItem('github_token');
+        if (savedToken) {
+            try {
+                githubToken = atob(savedToken);
+                document.getElementById('github-token').value = '••••••••';
+                document.getElementById('token-status').textContent = 'Token saved';
+            } catch (e) {
+                console.error('Error loading token:', e);
+            }
+        }
+        
+        document.getElementById('save-token-btn').addEventListener('click', () => {
+            const tokenInput = document.getElementById('github-token');
+            const token = tokenInput.value.trim();
+            if (!token || token === '••••••••') {
+                alert('Please enter a GitHub Personal Access Token');
+                return;
+            }
+            try {
+                localStorage.setItem('github_token', btoa(token));
+                githubToken = token;
+                tokenInput.value = '••••••••';
+                document.getElementById('token-status').textContent = '✓ Token saved successfully!';
+                document.getElementById('token-status').style.color = '#065f46';
+            } catch (e) {
+                alert('Error saving token: ' + e.message);
+            }
+        });
+        
+        document.querySelectorAll('.draggable').forEach(element => {
+            element.addEventListener('mousedown', startDrag);
+        });
+        
+        function switchView(view) {
+            currentView = view;
+            const headerPreview = document.getElementById('header-preview');
+            const websiteIframe = document.getElementById('website-iframe');
+            const headerBtn = document.getElementById('header-view-btn');
+            const websiteBtn = document.getElementById('website-view-btn');
+            
+            if (view === 'header') {
+                headerPreview.classList.remove('hidden');
+                const iframeContainer = document.querySelector('.website-iframe-container');
+                iframeContainer.classList.remove('show');
+                headerBtn.classList.add('active');
+                websiteBtn.classList.remove('active');
+                document.querySelectorAll('.draggable').forEach(element => {
+                    element.addEventListener('mousedown', startDrag);
+                });
+            } else {
+                headerPreview.classList.add('hidden');
+                const iframeContainer = document.querySelector('.website-iframe-container');
+                iframeContainer.classList.add('show');
+                headerBtn.classList.remove('active');
+                websiteBtn.classList.add('active');
+                
+                websiteIframe.onload = function() {
+                    try {
+                        const iframeDoc = websiteIframe.contentDocument || websiteIframe.contentWindow.document;
+                        const logoSection = iframeDoc.getElementById('logo-section');
+                        const buttonsSection = iframeDoc.getElementById('buttons-section');
+                        
+                        if (logoSection) {
+                            iframeElements.logo = logoSection;
+                            logoSection.style.cursor = 'move';
+                            logoSection.addEventListener('mousedown', (e) => startDragIframe(e, logoSection));
+                        }
+                        if (buttonsSection) {
+                            iframeElements.buttons = buttonsSection;
+                            buttonsSection.style.cursor = 'move';
+                            buttonsSection.addEventListener('mousedown', (e) => startDragIframe(e, buttonsSection));
+                        }
+                    } catch (e) {
+                        console.error('Could not access iframe content (CORS):', e);
+                    }
+                };
+                
+                if (websiteIframe.contentDocument && websiteIframe.contentDocument.readyState === 'complete') {
+                    websiteIframe.onload();
+                }
+            }
+        }
+        
+        function startDragIframe(e, element) {
+            draggedElement = element;
+            const rect = element.getBoundingClientRect();
+            const iframe = document.getElementById('website-iframe');
+            const iframeRect = iframe.getBoundingClientRect();
+            
+            offset.x = e.clientX - rect.left;
+            offset.y = e.clientY - rect.top;
+            
+            element.style.opacity = '0.8';
+            element.style.zIndex = '1000';
+            
+            const iframeDoc = element.ownerDocument;
+            const onMouseMove = (e) => {
+                if (!draggedElement) return;
+                const headerNav = iframeDoc.querySelector('nav');
+                if (!headerNav) return;
+                const navRect = headerNav.getBoundingClientRect();
+                const iframeRect = iframe.getBoundingClientRect();
+                
+                let left = e.clientX - iframeRect.left - navRect.left - offset.x;
+                let top = e.clientY - iframeRect.top - navRect.top - offset.y;
+                
+                left = Math.max(0, Math.min(left, navRect.width - element.offsetWidth));
+                top = Math.max(0, Math.min(top, navRect.height - element.offsetHeight));
+                
+                if (element.id === 'logo-section') {
+                    element.style.left = left + 'px';
+                    element.style.right = 'auto';
+                    element.style.top = top + 'px';
+                } else if (element.id === 'buttons-section') {
+                    const right = navRect.width - (left + element.offsetWidth);
+                    element.style.right = right + 'px';
+                    element.style.left = 'auto';
+                    element.style.top = top + 'px';
+                }
+            };
+            
+            const onMouseUp = () => {
+                if (draggedElement) {
+                    draggedElement.style.opacity = '';
+                    draggedElement.style.zIndex = '';
+                }
+                draggedElement = null;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            };
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+            e.preventDefault();
+        }
+        
+        function startDrag(e) {
+            draggedElement = e.currentTarget;
+            const rect = draggedElement.getBoundingClientRect();
+            offset.x = e.clientX - rect.left;
+            offset.y = e.clientY - rect.top;
+            
+            draggedElement.classList.add('dragging');
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDrag);
+            e.preventDefault();
+        }
+        
+        function drag(e) {
+            if (!draggedElement) return;
+            const headerPreview = document.getElementById('header-preview');
+            const headerRect = headerPreview.getBoundingClientRect();
+            
+            let left = e.clientX - headerRect.left - offset.x;
+            let top = e.clientY - headerRect.top - offset.y;
+            
+            left = Math.max(0, Math.min(left, headerRect.width - draggedElement.offsetWidth));
+            top = Math.max(0, Math.min(top, headerRect.height - draggedElement.offsetHeight));
+            
+            if (draggedElement.id === 'logo-section') {
+                draggedElement.style.left = left + 'px';
+                draggedElement.style.right = 'auto';
+                draggedElement.style.top = top + 'px';
+            } else if (draggedElement.id === 'buttons-section') {
+                const right = headerRect.width - (left + draggedElement.offsetWidth);
+                draggedElement.style.right = right + 'px';
+                draggedElement.style.left = 'auto';
+                draggedElement.style.top = top + 'px';
+            }
+        }
+        
+        function stopDrag() {
+            if (draggedElement) {
+                draggedElement.classList.remove('dragging');
+            }
+            draggedElement = null;
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('mouseup', stopDrag);
+        }
+        
+        function updatePosition(elementId, property, value) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                if (property === 'left' || property === 'right') {
+                    element.style[property] = value + 'px';
+                    if (property === 'left') element.style.right = 'auto';
+                    if (property === 'right') element.style.left = 'auto';
+                } else {
+                    element.style[property] = value + 'px';
+                }
+            }
+        }
+        
+        async function saveAndPush() {
+            alert('This editor’s GitHub push flow is configured for a different repo in the local version. We can update it next if you want.');
+        }
+    </script>
+</body>
+</html>
+
