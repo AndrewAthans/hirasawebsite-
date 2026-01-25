@@ -280,16 +280,28 @@ document.addEventListener('DOMContentLoaded', function() {
     if (videos[0] && videos[1] && videos[2]) {
         let currentIndex = 0;
         
+        // Preload all videos
+        videos.forEach((video, index) => {
+            video.load();
+            // Set all videos to ready state
+            video.addEventListener('loadeddata', () => {
+                console.log('Video ' + (index + 1) + ' loaded');
+            });
+        });
+        
         setInterval(() => {
+            // Fade out current video
             videos[currentIndex].classList.remove('opacity-100');
             videos[currentIndex].classList.add('opacity-0');
-            videos[currentIndex].pause();
             
+            // Move to next video
             currentIndex = (currentIndex + 1) % videos.length;
             
+            // Fade in and play next video
             videos[currentIndex].classList.remove('opacity-0');
             videos[currentIndex].classList.add('opacity-100');
-            videos[currentIndex].play();
+            videos[currentIndex].currentTime = 0;
+            videos[currentIndex].play().catch(e => console.log('Video play error:', e));
         }, 8000); // Change video every 8 seconds
     }
 });
