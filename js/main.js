@@ -269,5 +269,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Video Slideshow
+    const videos = [
+        document.getElementById('video-1'),
+        document.getElementById('video-2'),
+        document.getElementById('video-3')
+    ];
+
+    if (videos[0] && videos[1] && videos[2]) {
+        let currentIndex = 0;
+        
+        setInterval(() => {
+            videos[currentIndex].classList.remove('opacity-100');
+            videos[currentIndex].classList.add('opacity-0');
+            videos[currentIndex].pause();
+            
+            currentIndex = (currentIndex + 1) % videos.length;
+            
+            videos[currentIndex].classList.remove('opacity-0');
+            videos[currentIndex].classList.add('opacity-100');
+            videos[currentIndex].play();
+        }, 8000); // Change video every 8 seconds
+    }
 });
 
