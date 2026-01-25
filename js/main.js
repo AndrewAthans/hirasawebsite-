@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Video Slideshow
+    // Video Slideshow - play each video once then switch
     const videos = [
         document.getElementById('video-1'),
         document.getElementById('video-2'),
@@ -281,28 +281,34 @@ document.addEventListener('DOMContentLoaded', function() {
         let currentIndex = 0;
         
         // Preload all videos
-        videos.forEach((video, index) => {
-            video.load();
-            // Set all videos to ready state
-            video.addEventListener('loadeddata', () => {
-                console.log('Video ' + (index + 1) + ' loaded');
-            });
-        });
+        videos.forEach(video => video.load());
         
-        setInterval(() => {
-            // Fade out current video
-            videos[currentIndex].classList.remove('opacity-100');
-            videos[currentIndex].classList.add('opacity-0');
+        function switchToNextVideo() {
+            const currentVideo = videos[currentIndex];
+            const nextIndex = (currentIndex + 1) % videos.length;
+            const nextVideo = videos[nextIndex];
             
-            // Move to next video
-            currentIndex = (currentIndex + 1) % videos.length;
+            // Start next video before fading (prevents white gap)
+            nextVideo.currentTime = 0;
+            nextVideo.play().catch(e => {});
             
-            // Fade in and play next video
-            videos[currentIndex].classList.remove('opacity-0');
-            videos[currentIndex].classList.add('opacity-100');
-            videos[currentIndex].currentTime = 0;
-            videos[currentIndex].play().catch(e => console.log('Video play error:', e));
-        }, 8000); // Change video every 8 seconds
+            // Fade in next video
+            nextVideo.classList.remove('opacity-0');
+            nextVideo.classList.add('opacity-100');
+            
+            // Fade out current video after short delay
+            setTimeout(() => {
+                currentVideo.classList.remove('opacity-100');
+                currentVideo.classList.add('opacity-0');
+            }, 500);
+            
+            currentIndex = nextIndex;
+        }
+        
+        // Switch when each video ends
+        videos.forEach(video => {
+            video.addEventListener('ended', switchToNextVideo);
+        });
     }
 });
 
