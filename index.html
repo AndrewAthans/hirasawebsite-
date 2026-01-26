@@ -12,21 +12,21 @@
     <header class="bg-gray-800 sticky top-0 z-50">
         <nav class="container mx-auto px-4 py-4 relative">
             <div class="flex items-center justify-between">
-                <!-- Logo Section - Left Side -->
-                <a href="index.html" class="flex items-center gap-2" data-editable="logo-section" id="logo-section">
-                    <!-- Logo Icon -->
+                <!-- Logo Section - Left Side (Leadership Institute style layout) -->
+                <a href="index.html" class="flex items-center gap-4" data-editable="logo-section" id="logo-section">
+                    <!-- Logo Icon in fixed box -->
                     <div class="flex-shrink-0">
                         <img src="assets/hirasa-logo-transparent.png" 
                              alt="Hirasa Foundation Logo" 
-                             class="h-[90px] w-auto object-contain"
+                             class="h-[70px] md:h-[80px] w-auto object-contain"
                              style="filter: brightness(0) invert(1); opacity: 0.95;"
                              onerror="this.style.display='none';">
                     </div>
-                    <!-- Organization Name and Tagline -->
+                    <!-- Organization Name and Tagline - Large stacked title -->
                     <div class="flex flex-col">
-                        <div class="text-white font-serif text-xl font-bold leading-tight">HIRASA</div>
-                        <div class="text-white font-serif text-lg font-semibold leading-tight">FOUNDATION</div>
-                        <div class="text-white text-xs font-serif font-light leading-tight opacity-90 mt-0.5">cultivating the next generation of muslims</div>
+                        <div class="text-white font-serif text-2xl md:text-3xl lg:text-4xl font-normal leading-none tracking-tight">Hirasa</div>
+                        <div class="text-white font-serif text-2xl md:text-3xl lg:text-4xl font-normal leading-none tracking-tight">Foundation</div>
+                        <div class="text-white text-xs md:text-sm font-serif font-light leading-tight opacity-80 mt-1">Cultivating the Next Generation of Muslims</div>
                     </div>
                 </a>
 
@@ -119,26 +119,26 @@
     </div>
 
     <!-- Hero Section -->
-    <section id="home" class="relative text-white min-h-[calc(100vh-100px)] flex items-center overflow-hidden">
-        <!-- Video Slideshow Container -->
-        <div class="absolute inset-0 w-full h-full">
+    <section id="home" class="relative text-white min-h-[calc(100vh-100px)] flex items-center overflow-hidden bg-black">
+        <!-- Video Slideshow Container - bg-black prevents white seams during fades -->
+        <div class="absolute inset-0 w-full h-full bg-black overflow-hidden">
             <video id="video-1" 
-                   class="absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-1000 z-0"
+                   class="video-slideshow-item absolute inset-0 w-full h-full object-cover opacity-100 transition-opacity duration-1000 z-10"
                    autoplay muted loop playsinline preload="auto">
                 <source src="assets/video-1-islamic-scene.mp4" type="video/mp4">
             </video>
             <video id="video-2" 
-                   class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 z-0"
-                   muted loop playsinline preload="auto">
+                   class="video-slideshow-item absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 z-10"
+                   autoplay muted loop playsinline preload="auto">
                 <source src="assets/video-2-islamic-school.mp4" type="video/mp4">
             </video>
             <video id="video-3" 
-                   class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 z-0"
-                   muted loop playsinline preload="auto">
+                   class="video-slideshow-item absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 z-10"
+                   autoplay muted loop playsinline preload="auto">
                 <source src="assets/video-3-muslim-students.mp4" type="video/mp4">
             </video>
         </div>
-        <div class="absolute inset-0 bg-black bg-opacity-30 z-[1]"></div>
+        <div class="absolute inset-0 bg-black bg-opacity-30 z-[11]"></div>
         <div class="container mx-auto px-4 text-center relative z-10 py-32 md:py-40">
             <h1 class="text-5xl md:text-6xl font-serif font-bold mb-6">
                 Hirasa Foundation
@@ -171,30 +171,115 @@
     <section class="py-16 bg-gray-50">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-serif font-bold text-center mb-12">What We Do</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-                <div class="bg-white rounded-lg p-6 shadow-md">
-                    <h3 class="text-xl font-serif font-bold mb-4">Leadership Formation</h3>
-                    <p class="text-gray-600">
-                        We develop character, discipline, and ethical judgment before titles or influence.
-                    </p>
-                </div>
-                <div class="bg-white rounded-lg p-6 shadow-md">
-                    <h3 class="text-xl font-serif font-bold mb-4">Leadership Skill-Building</h3>
-                    <p class="text-gray-600">
-                        We train practical leadership skills that serve communities: communication, decision-making, reconciliation, and organization.
-                    </p>
-                </div>
-                <div class="bg-white rounded-lg p-6 shadow-md">
-                    <h3 class="text-xl font-serif font-bold mb-4">Cultural Renewal</h3>
-                    <p class="text-gray-600">
-                        We aim to change culture through people — building a generation shaped by prophetic principles and long-term responsibility.
-                    </p>
-                </div>
-                <div class="bg-white rounded-lg p-6 shadow-md">
-                    <h3 class="text-xl font-serif font-bold mb-4">Community Impact</h3>
-                    <p class="text-gray-600">
-                        We translate learning into service and local initiatives that strengthen institutions and trust.
-                    </p>
+            <div class="max-w-6xl mx-auto">
+                <div class="relative" data-carousel="whatwedo">
+                    <!-- Arrows -->
+                    <button type="button" class="whatwedo-arrow whatwedo-arrow--prev" aria-label="Previous card">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </button>
+                    <button type="button" class="whatwedo-arrow whatwedo-arrow--next" aria-label="Next card">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Viewport -->
+                    <div class="overflow-hidden px-10">
+                        <div class="whatwedo-track flex gap-8 transition-transform duration-500 ease-in-out">
+                            <!-- Card 1 -->
+                            <div class="whatwedo-slide">
+                                <div class="whatwedo-card">
+                                    <div class="whatwedo-cutout" aria-hidden="true">
+                                        <div class="whatwedo-cutout__bg"></div>
+                                        <div class="whatwedo-cutout__icon text-white">
+                                            <!-- Rider on horse, pointing outward -->
+                                            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M7 16c1.4-2.3 3.6-4 6.3-4.7l2.2-.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                                <path d="M14 7c.7 0 1.3.6 1.3 1.3S14.7 9.6 14 9.6s-1.3-.6-1.3-1.3S13.3 7 14 7z" fill="currentColor"></path>
+                                                <path d="M12 10.5l2.2 1.7 1.6-1.2 2.2 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M6 17.5c.5 1.5 1.7 2.5 3.4 2.5H14c1.7 0 3-1 3.7-2.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                                <path d="M10 14l-1 3m7-2l-1 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-xl font-serif font-bold mb-3 text-center">Leadership Formation</h3>
+                                    <p class="text-gray-600 text-center">
+                                        Develop character, discipline, and ethical judgment before titles or influence.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div class="whatwedo-slide">
+                                <div class="whatwedo-card">
+                                    <div class="whatwedo-cutout" aria-hidden="true">
+                                        <div class="whatwedo-cutout__bg"></div>
+                                        <div class="whatwedo-cutout__icon text-white">
+                                            <!-- Person reading a book -->
+                                            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M8 20c1.2-1 3.1-1.7 5-1.7s3.8.7 5 1.7V6c-1.2-1-3.1-1.7-5-1.7S9.2 5 8 6v14z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path>
+                                                <path d="M8 8H6c-1.1 0-2 .9-2 2v10c1.2-1 3.1-1.7 5-1.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                                <path d="M16 9.2c.6 0 1 .4 1 1s-.4 1-1 1-1-.4-1-1 .4-1 1-1z" fill="currentColor"></path>
+                                                <path d="M15 12.5c-.8.3-1.5.9-2 1.7" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-xl font-serif font-bold mb-3 text-center">Leadership Skill-Building</h3>
+                                    <p class="text-gray-600 text-center">
+                                        Train practical leadership skills that serve communities: communication, decision-making, reconciliation, and organization.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Card 3 -->
+                            <div class="whatwedo-slide">
+                                <div class="whatwedo-card">
+                                    <div class="whatwedo-cutout" aria-hidden="true">
+                                        <div class="whatwedo-cutout__bg"></div>
+                                        <div class="whatwedo-cutout__icon text-white">
+                                            <!-- Two people hugging -->
+                                            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M8.2 10.2c.6 0 1.1-.5 1.1-1.1S8.8 8 8.2 8s-1.1.5-1.1 1.1.5 1.1 1.1 1.1z" fill="currentColor"></path>
+                                                <path d="M15.8 10.2c.6 0 1.1-.5 1.1-1.1S16.4 8 15.8 8s-1.1.5-1.1 1.1.5 1.1 1.1 1.1z" fill="currentColor"></path>
+                                                <path d="M6.5 18c.4-2.4 1.7-4 3.6-4.8 1-.4 2.1-.4 3.2 0 1.9.8 3.2 2.4 3.6 4.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                                <path d="M9 14.5c1.2 1 2.8 1 4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                                <path d="M7.5 15.2c1.1-.4 2.3.1 3.1 1.2M16.5 15.2c-1.1-.4-2.3.1-3.1 1.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-xl font-serif font-bold mb-3 text-center">Cultural Renewal</h3>
+                                    <p class="text-gray-600 text-center">
+                                        Aim to change culture through people — building a generation shaped by prophetic principles and long-term responsibility.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Card 4 -->
+                            <div class="whatwedo-slide">
+                                <div class="whatwedo-card">
+                                    <div class="whatwedo-cutout" aria-hidden="true">
+                                        <div class="whatwedo-cutout__bg"></div>
+                                        <div class="whatwedo-cutout__icon text-white">
+                                            <!-- Speaker at podium + microphone -->
+                                            <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M14.5 6.8c.7 0 1.2.5 1.2 1.2s-.5 1.2-1.2 1.2-1.2-.5-1.2-1.2.5-1.2 1.2-1.2z" fill="currentColor"></path>
+                                                <path d="M18 9.5h2m-1-1v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                                <path d="M9 12h10v7H9v-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path>
+                                                <path d="M12.5 12V10.5c0-1 .8-1.8 1.8-1.8H15c1 0 1.8.8 1.8 1.8V12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                                <path d="M11 19h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <h3 class="text-xl font-serif font-bold mb-3 text-center">Community Impact</h3>
+                                    <p class="text-gray-600 text-center">
+                                        Translate learning into service and local initiatives that strengthen institutions and trust.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
